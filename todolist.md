@@ -12,6 +12,7 @@
 - [x] Remove dummy data from products.json
 - [x] Reset product data to only use products from PRODUCT_URLS in amazon-scraper.js
 - [x] Fix issue with amazon.com products appearing in amazon.co.uk section
+- [x] Add brand and resolution columns to search results table
 
 ## Pending Tasks
 - [ ] Add dark mode toggle functionality

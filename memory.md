@@ -11,6 +11,7 @@ The project has a functional implementation with the following features:
 - Filtering system by marketplace, brand, model, resolution, price range, and rating
 - Sorting options by popularity, price, rating, and release date
 - Two view modes: table view (without images) and grid view (with images)
+- Enhanced table view with separate columns for brand and resolution for better data organization
 - URL parameter management for shareable filtered views
 - Dynamic SEO updates (title, meta description)
 - Fallback to localStorage cache if JSON file can't be loaded

@@ -229,7 +229,9 @@ const renderProductsTable = (products, marketplace) => {
     <table class="results-table">
       <thead>
         <tr>
+          <th>Brand</th>
           <th>Product</th>
+          <th>Resolution</th>
           <th>Price</th>
           <th>Rating</th>
           <th>Features</th>
@@ -250,8 +252,13 @@ const renderProductsTable = (products, marketplace) => {
     tableHtml += `
       <tr>
         <td>
-          <div class="product-title">${product.brand} ${product.model}</div>
-          <div class="product-resolution">${product.resolution} Resolution</div>
+          <div class="product-brand">${product.brand}</div>
+        </td>
+        <td>
+          <div class="product-title">${product.model}</div>
+        </td>
+        <td>
+          <div class="product-resolution">${product.resolution}</div>
         </td>
         <td>
           <div class="product-price">${formatPrice(price, marketplace)}</div>
