@@ -1,0 +1,42 @@
+[2025-03-10T15:16:01.135Z] Starting product data update...
+[2025-03-10T15:16:01.178Z] Created backup of products file: /home/kayakertom/newdashcam/data/products.backup.json
+[2025-03-10T15:16:01.183Z] Read 12 existing products
+[2025-03-10T15:16:03.142Z] Scraped 0 new products
+[2025-03-10T15:16:03.152Z] Merged into 12 total products
+[2025-03-10T15:16:03.161Z] Saved 12 products to /home/kayakertom/newdashcam/data/products.json
+[2025-03-10T15:16:03.168Z] Product data update completed successfully
+[2025-03-10T15:17:24.266Z] Starting product data update...
+[2025-03-10T15:17:24.309Z] Created backup of products file: /home/kayakertom/newdashcam/data/products.backup.json
+[2025-03-10T15:17:24.314Z] Read 12 existing products
+[2025-03-10T15:18:47.901Z] Scraped 0 new products
+[2025-03-10T15:18:47.915Z] Merged into 12 total products
+[2025-03-10T15:18:47.931Z] Saved 12 products to /home/kayakertom/newdashcam/data/products.json
+[2025-03-10T15:18:47.939Z] Product data update completed successfully
+[2025-03-10T15:23:21.678Z] Starting product data update...
+[2025-03-10T15:23:21.751Z] Created backup of products file: /home/kayakertom/newdashcam/data/products.backup.json
+[2025-03-10T15:23:21.756Z] Read 12 existing products
+[2025-03-10T15:25:46.091Z] Scraped 0 new products
+[2025-03-10T15:25:46.096Z] Merged into 12 total products
+[2025-03-10T15:25:46.101Z] Saved 12 products to /home/kayakertom/newdashcam/data/products.json
+[2025-03-10T15:25:46.103Z] Product data update completed successfully
+[2025-03-10T15:27:12.005Z] Starting product data update...
+[2025-03-10T15:27:12.053Z] Created backup of products file: /home/kayakertom/newdashcam/data/products.backup.json
+[2025-03-10T15:27:12.059Z] Read 12 existing products
+[2025-03-10T15:29:34.392Z] Scraped 2 new products
+[2025-03-10T15:29:34.407Z] Merged into 14 total products
+[2025-03-10T15:29:34.427Z] Saved 14 products to /home/kayakertom/newdashcam/data/products.json
+[2025-03-10T15:29:34.429Z] Product data update completed successfully
+[2025-03-10T15:42:53.777Z] Starting product data reset...
+[2025-03-10T15:42:53.821Z] Created backup of products file: /home/kayakertom/newdashcam/data/products.backup.json
+[2025-03-10T15:42:53.824Z] Deleting all existing product data...
+[2025-03-10T15:42:53.825Z] Scraping 2 products from PRODUCT_URLS array...
+[2025-03-10T15:44:48.705Z] Scraped 2 products from PRODUCT_URLS
+[2025-03-10T15:44:48.711Z] Saved 2 products to /home/kayakertom/newdashcam/data/products.json
+[2025-03-10T15:44:48.714Z] Product data reset completed successfully
+[2025-03-10T16:01:40.119Z] Starting product data reset...
+[2025-03-10T16:01:40.166Z] Created backup of products file: /home/kayakertom/newdashcam/data/products.backup.json
+[2025-03-10T16:01:40.168Z] Deleting all existing product data...
+[2025-03-10T16:01:40.169Z] Scraping 2 products from PRODUCT_URLS array...
+[2025-03-10T16:03:21.494Z] Scraped 2 products from PRODUCT_URLS
+[2025-03-10T16:03:21.503Z] Saved 2 products to /home/kayakertom/newdashcam/data/products.json
+[2025-03-10T16:03:21.506Z] Product data reset completed successfully

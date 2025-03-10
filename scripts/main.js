@@ -3,333 +3,82 @@
  * Handles filtering, sorting, and display of dash cam products
  */
 
-// Product data - This would ideally come from an API in a production environment
-const dashCamProducts = [
-  {
-    id: 1,
-    brand: "Nextbase",
-    model: "522GW",
-    image: "https://m.media-amazon.com/images/I/71vHX08pxZL._AC_SL1500_.jpg",
-    price: {
-      amazon_com: 199.99,
-      amazon_uk: 149.99
-    },
-    rating: 4.5,
-    reviewCount: 3254,
-    resolution: "1440p",
-    features: [
-      "Built-in Alexa",
-      "Emergency SOS",
-      "GPS",
-      "Bluetooth",
-      "WiFi",
-      "Polarizing filter"
-    ],
-    releaseDate: "2019-05-15",
-    popularity: 95,
-    amazonUrl: {
-      com: "https://www.amazon.com/Nextbase-Dash-Camera-Emergency-Recording/dp/B07PV1M3YF/",
-      uk: "https://www.amazon.co.uk/Nextbase-522GW-Dash-Camera-Black/dp/B07Q3SGXPD/"
+// Default product data (used as fallback if JSON file can't be loaded)
+let dashCamProducts = [];
+
+// Path to the JSON file containing product data
+const PRODUCTS_JSON_PATH = '/data/products.json';
+
+/**
+ * Fetches product data from the JSON file
+ * @returns {Promise<Array>} - Promise that resolves to the product data array
+ */
+async function fetchProductData() {
+  try {
+    const response = await fetch(PRODUCTS_JSON_PATH);
+    
+    // Check if the request was successful
+    if (!response.ok) {
+      throw new Error(`Failed to fetch product data: ${response.status} ${response.statusText}`);
     }
-  },
-  {
-    id: 2,
-    brand: "Garmin",
-    model: "Dash Cam 66W",
-    image: "https://m.media-amazon.com/images/I/71dpZCe8SDL._AC_SL1500_.jpg",
-    price: {
-      amazon_com: 249.99,
-      amazon_uk: 199.99
-    },
-    rating: 4.3,
-    reviewCount: 2187,
-    resolution: "1440p",
-    features: [
-      "180-degree field of view",
-      "Voice control",
-      "GPS",
-      "WiFi",
-      "Parking mode",
-      "Incident detection"
-    ],
-    releaseDate: "2019-04-05",
-    popularity: 88,
-    amazonUrl: {
-      com: "https://www.amazon.com/Garmin-66W-Extra-Wide-Recording-G-sensor/dp/B07R638L8N/",
-      uk: "https://www.amazon.co.uk/Garmin-Extra-Wide-Recording-G-sensor-66W/dp/B07R638L8N/"
+    
+    // Parse the JSON response
+    const data = await response.json();
+    
+    console.log(`Loaded ${data.length} products from JSON file`);
+    return data;
+  } catch (error) {
+    console.error('Error loading product data:', error);
+    
+    // If we have products in localStorage, use those as a fallback
+    const cachedData = localStorage.getItem('dashCamProducts');
+    if (cachedData) {
+      try {
+        const parsedData = JSON.parse(cachedData);
+        console.log(`Using ${parsedData.length} cached products from localStorage`);
+        return parsedData;
+      } catch (cacheError) {
+        console.error('Error parsing cached product data:', cacheError);
+      }
     }
-  },
-  {
-    id: 3,
-    brand: "REDTIGER",
-    model: "F7N",
-    image: "https://m.media-amazon.com/images/I/71zrI5vBLLL._AC_SL1500_.jpg",
-    price: {
-      amazon_com: 89.99,
-      amazon_uk: 79.99
-    },
-    rating: 4.4,
-    reviewCount: 8765,
-    resolution: "4K",
-    features: [
-      "4K recording",
-      "Front and rear cameras",
-      "Night vision",
-      "24-hour parking mode",
-      "Loop recording",
-      "G-sensor"
-    ],
-    releaseDate: "2021-01-20",
-    popularity: 92,
-    amazonUrl: {
-      com: "https://www.amazon.com/REDTIGER-Dashboard-Recording-G-Sensor-Recording/dp/B07RLTXMWS/",
-      uk: "https://www.amazon.co.uk/REDTIGER-Dashboard-Recording-G-Sensor-Recording/dp/B07RLTXMWS/"
-    }
-  },
-  {
-    id: 4,
-    brand: "Rove",
-    model: "R2-4K",
-    image: "https://m.media-amazon.com/images/I/71uIWQQQABL._AC_SL1500_.jpg",
-    price: {
-      amazon_com: 119.99,
-      amazon_uk: 109.99
-    },
-    rating: 4.4,
-    reviewCount: 25698,
-    resolution: "4K",
-    features: [
-      "4K recording",
-      "Built-in WiFi",
-      "Super night vision",
-      "Parking monitor",
-      "Motion detection",
-      "G-sensor"
-    ],
-    releaseDate: "2020-03-15",
-    popularity: 96,
-    amazonUrl: {
-      com: "https://www.amazon.com/R2-4K-Dashboard-Camera-Recorder-Vision/dp/B074JT3698/",
-      uk: "https://www.amazon.co.uk/R2-4K-Dashboard-Camera-Recorder-Vision/dp/B074JT3698/"
-    }
-  },
-  {
-    id: 5,
-    brand: "Thinkware",
-    model: "U1000",
-    image: "https://m.media-amazon.com/images/I/61vHFfzwRVL._AC_SL1500_.jpg",
-    price: {
-      amazon_com: 399.99,
-      amazon_uk: 349.99
-    },
-    rating: 4.2,
-    reviewCount: 1254,
-    resolution: "4K",
-    features: [
-      "4K UHD recording",
-      "Super night vision 2.0",
-      "Dual-band WiFi",
-      "Advanced parking mode",
-      "Energy saving",
-      "Time lapse"
-    ],
-    releaseDate: "2020-09-10",
-    popularity: 82,
-    amazonUrl: {
-      com: "https://www.amazon.com/THINKWARE-U1000-Dashboard-G-Sensor-Recording/dp/B082FCZK4V/",
-      uk: "https://www.amazon.co.uk/THINKWARE-U1000-Dashboard-G-Sensor-Recording/dp/B082FCZK4V/"
-    }
-  },
-  {
-    id: 6,
-    brand: "Vantrue",
-    model: "N4",
-    image: "https://m.media-amazon.com/images/I/71lK2pJP4GL._AC_SL1500_.jpg",
-    price: {
-      amazon_com: 259.99,
-      amazon_uk: 239.99
-    },
-    rating: 4.3,
-    reviewCount: 3876,
-    resolution: "1440p",
-    features: [
-      "Three channel recording",
-      "Infrared night vision",
-      "24 hour parking mode",
-      "Capacitor instead of battery",
-      "G-sensor",
-      "Time lapse"
-    ],
-    releaseDate: "2020-07-22",
-    popularity: 85,
-    amazonUrl: {
-      com: "https://www.amazon.com/Vantrue-N4-Infrared-Capacitor-Detection/dp/B083V6K8RH/",
-      uk: "https://www.amazon.co.uk/Vantrue-N4-Infrared-Capacitor-Detection/dp/B083V6K8RH/"
-    }
-  },
-  {
-    id: 7,
-    brand: "BlackVue",
-    model: "DR900X-2CH",
-    image: "https://m.media-amazon.com/images/I/61y4JMmgbKL._AC_SL1500_.jpg",
-    price: {
-      amazon_com: 499.99,
-      amazon_uk: 459.99
-    },
-    rating: 4.6,
-    reviewCount: 1876,
-    resolution: "4K",
-    features: [
-      "4K UHD recording",
-      "Cloud connectivity",
-      "Built-in GPS",
-      "Dual-band WiFi",
-      "Impact & motion detection",
-      "Parking mode"
-    ],
-    releaseDate: "2021-02-15",
-    popularity: 89,
-    amazonUrl: {
-      com: "https://www.amazon.com/BlackVue-DR900X-2CH-Hardwiring-Recorder-Detection/dp/B08P5FMRKS/",
-      uk: "https://www.amazon.co.uk/BlackVue-DR900X-2CH-Hardwiring-Recorder-Detection/dp/B08P5FMRKS/"
-    }
-  },
-  {
-    id: 8,
-    brand: "70mai",
-    model: "Pro Plus+",
-    image: "https://m.media-amazon.com/images/I/61VI4uw95rS._AC_SL1500_.jpg",
-    price: {
-      amazon_com: 119.99,
-      amazon_uk: 109.99
-    },
-    rating: 4.4,
-    reviewCount: 5432,
-    resolution: "1440p",
-    features: [
-      "1440p recording",
-      "Built-in GPS",
-      "ADAS",
-      "Emergency recording",
-      "App control",
-      "140° wide angle"
-    ],
-    releaseDate: "2020-11-11",
-    popularity: 87,
-    amazonUrl: {
-      com: "https://www.amazon.com/70mai-Dashboard-Recording-G-Sensor-Monitoring/dp/B08LVHY5Q7/",
-      uk: "https://www.amazon.co.uk/70mai-Dashboard-Recording-G-Sensor-Monitoring/dp/B08LVHY5Q7/"
-    }
-  },
-  {
-    id: 9,
-    brand: "VIOFO",
-    model: "A129 Pro Duo",
-    image: "https://m.media-amazon.com/images/I/61llpAiPGGL._AC_SL1500_.jpg",
-    price: {
-      amazon_com: 249.99,
-      amazon_uk: 229.99
-    },
-    rating: 4.5,
-    reviewCount: 2987,
-    resolution: "4K",
-    features: [
-      "4K front + 1080p rear",
-      "GPS logger",
-      "WiFi",
-      "Parking mode",
-      "G-sensor",
-      "Motion detection"
-    ],
-    releaseDate: "2020-05-20",
-    popularity: 91,
-    amazonUrl: {
-      com: "https://www.amazon.com/VIOFO-A129-Dash-Camera-Recording/dp/B07RXQJ148/",
-      uk: "https://www.amazon.co.uk/VIOFO-A129-Dash-Camera-Recording/dp/B07RXQJ148/"
-    }
-  },
-  {
-    id: 10,
-    brand: "Kingslim",
-    model: "D4",
-    image: "https://m.media-amazon.com/images/I/71zCweT0MQL._AC_SL1500_.jpg",
-    price: {
-      amazon_com: 149.99,
-      amazon_uk: 139.99
-    },
-    rating: 4.3,
-    reviewCount: 4567,
-    resolution: "4K",
-    features: [
-      "4K front + 1080p rear",
-      "Built-in WiFi",
-      "GPS",
-      "Super night vision",
-      "Parking monitor",
-      "170° wide angle"
-    ],
-    releaseDate: "2021-03-30",
-    popularity: 86,
-    amazonUrl: {
-      com: "https://www.amazon.com/Kingslim-D4-2160P-Recorder-G-Sensor/dp/B08LTWG5LT/",
-      uk: "https://www.amazon.co.uk/Kingslim-D4-2160P-Recorder-G-Sensor/dp/B08LTWG5LT/"
-    }
-  },
-  {
-    id: 11,
-    brand: "Nexar",
-    model: "Beam",
-    image: "https://m.media-amazon.com/images/I/71Iek5ycXKL._AC_SL1500_.jpg",
-    price: {
-      amazon_com: 129.99,
-      amazon_uk: 119.99
-    },
-    rating: 4.2,
-    reviewCount: 3456,
-    resolution: "1080p",
-    features: [
-      "Cloud storage",
-      "Automatic incident recording",
-      "Parking mode",
-      "GPS",
-      "Night vision",
-      "Smartphone app"
-    ],
-    releaseDate: "2021-01-05",
-    popularity: 84,
-    amazonUrl: {
-      com: "https://www.amazon.com/Nexar-Beam-Full-Road-Dash/dp/B07ZPKQM6X/",
-      uk: "https://www.amazon.co.uk/Nexar-Beam-Full-Road-Dash/dp/B07ZPKQM6X/"
-    }
-  },
-  {
-    id: 12,
-    brand: "Cobra",
-    model: "SC 400",
-    image: "https://m.media-amazon.com/images/I/71Yx9Lq+9QL._AC_SL1500_.jpg",
-    price: {
-      amazon_com: 199.99,
-      amazon_uk: 189.99
-    },
-    rating: 4.1,
-    reviewCount: 1234,
-    resolution: "4K",
-    features: [
-      "4K recording",
-      "160° field of view",
-      "Driver alerts",
-      "Emergency recording",
-      "Parking mode",
-      "G-sensor"
-    ],
-    releaseDate: "2020-08-15",
-    popularity: 79,
-    amazonUrl: {
-      com: "https://www.amazon.com/Cobra-SC-400-Powered-G-Sensor-SC400/dp/B08B3PDGQB/",
-      uk: "https://www.amazon.co.uk/Cobra-SC-400-Powered-G-Sensor-SC400/dp/B08B3PDGQB/"
+    
+    // If all else fails, return an empty array
+    console.log('Using empty product array as fallback');
+    return [];
+  }
+}
+
+// Load product data when the page loads
+window.addEventListener('DOMContentLoaded', async () => {
+  // Show loading indicator
+  const resultsContainer = document.getElementById('results-container');
+  if (resultsContainer) {
+    resultsContainer.innerHTML = '<div class="loading">Loading product data...</div>';
+  }
+  
+  try {
+    // Fetch product data
+    dashCamProducts = await fetchProductData();
+    
+    // Cache the data in localStorage for offline use
+    localStorage.setItem('dashCamProducts', JSON.stringify(dashCamProducts));
+    
+    // Initialize the page with the loaded data
+    initPage();
+  } catch (error) {
+    console.error('Error initializing page with product data:', error);
+    
+    // Show error message
+    if (resultsContainer) {
+      resultsContainer.innerHTML = `
+        <div class="error">
+          <p>Error loading product data. Please try refreshing the page.</p>
+          <p>Error details: ${error.message}</p>
+        </div>
+      `;
     }
   }
-];
+});
 
 // Get unique brands for the filter dropdown
 const getBrands = () => {
@@ -419,6 +168,10 @@ const sortProducts = (products, sortBy, marketplace) => {
 
 // Format price with currency symbol
 const formatPrice = (price, marketplace) => {
+  if (!price || price === 0) {
+    return 'Price not available';
+  }
+  
   if (marketplace === 'amazon_uk') {
     return `£${price.toFixed(2)}`;
   }
@@ -482,11 +235,15 @@ const renderProductsTable = (products, marketplace) => {
   products.forEach(product => {
     const price = marketplace === 'amazon_uk' ? product.price.amazon_uk : product.price.amazon_com;
     const amazonUrl = marketplace === 'amazon_uk' ? product.amazonUrl.uk : product.amazonUrl.com;
+    // Default image if none is provided
+    const imageUrl = product.image && product.image.trim() !== '' ? 
+      product.image : 
+      `https://via.placeholder.com/150x100/f0f0f0/333333?text=${encodeURIComponent(product.brand)}`;
     
     tableHtml += `
       <tr>
         <td>
-          <img src="${product.image}" alt="${product.brand} ${product.model}" class="product-image">
+          <img src="${imageUrl}" alt="${product.brand} ${product.model}" class="product-image">
         </td>
         <td>
           <div class="product-title">${product.brand} ${product.model}</div>
@@ -498,7 +255,7 @@ const renderProductsTable = (products, marketplace) => {
         <td>
           <div class="product-rating">
             <div class="stars">${generateStarRating(product.rating)}</div>
-            <span>${product.rating} (${product.reviewCount.toLocaleString()})</span>
+            <span>${product.rating} (${product.reviewCount > 0 ? product.reviewCount.toLocaleString() : 'No reviews yet'})</span>
           </div>
         </td>
         <td>
@@ -541,18 +298,22 @@ const renderProductsGrid = (products, marketplace) => {
   products.forEach(product => {
     const price = marketplace === 'amazon_uk' ? product.price.amazon_uk : product.price.amazon_com;
     const amazonUrl = marketplace === 'amazon_uk' ? product.amazonUrl.uk : product.amazonUrl.com;
+    // Default image if none is provided
+    const imageUrl = product.image && product.image.trim() !== '' ? 
+      product.image : 
+      `https://via.placeholder.com/300x200/f0f0f0/333333?text=${encodeURIComponent(product.brand)}`;
     
     gridHtml += `
       <div class="product-card">
         <div class="product-card-image">
-          <img src="${product.image}" alt="${product.brand} ${product.model}">
+          <img src="${imageUrl}" alt="${product.brand} ${product.model}">
         </div>
         <div class="product-card-content">
           <h3 class="product-card-title">${product.brand} ${product.model}</h3>
           <div class="product-card-price">${formatPrice(price, marketplace)}</div>
           <div class="product-card-rating">
             <div class="stars">${generateStarRating(product.rating)}</div>
-            <span>${product.rating} (${product.reviewCount.toLocaleString()})</span>
+            <span>${product.rating} (${product.reviewCount > 0 ? product.reviewCount.toLocaleString() : 'No reviews yet'})</span>
           </div>
           <div class="product-card-features">
             <ul>
@@ -657,8 +418,20 @@ const getUrlParams = () => {
   };
 };
 
-// Initialize the page
+// Initialize the page with product data
 const initPage = () => {
+  // If no products were loaded, show an error message
+  if (!dashCamProducts || dashCamProducts.length === 0) {
+    const resultsContainer = document.getElementById('results-container');
+    if (resultsContainer) {
+      resultsContainer.innerHTML = `
+        <div class="no-results">
+          <p>No product data available. Please check your connection and try again.</p>
+        </div>
+      `;
+    }
+    return;
+  }
   // Get elements
   const marketplaceRadios = document.querySelectorAll('input[name="marketplace"]');
   const brandSelect = document.getElementById('brand-select');
@@ -813,5 +586,4 @@ const debounce = (func, delay) => {
   };
 };
 
-// Initialize the page when DOM is loaded
-document.addEventListener('DOMContentLoaded', initPage);
+// Note: The DOMContentLoaded event listener is now handled in the window.addEventListener above

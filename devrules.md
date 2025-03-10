@@ -25,3 +25,24 @@ Do not annotate task completion in the memory file. It will be tracked in the to
 ## Update development guidelines
 
 If necessary, update the development guidelines to reflect anything you've learned while working on the project.
+
+## Environment Variables and Security
+
+- Use environment variables for sensitive information like API keys and credentials
+- Store environment variables in a .env file that is not committed to version control
+- Use the dotenv package to load environment variables in Node.js applications
+- Format environment variables as KEY=VALUE without quotes or JavaScript syntax
+- Always provide fallback values when accessing environment variables
+- Include example .env files (e.g., .env.example) in version control with placeholder values
+
+## API Integration
+
+- When using the Oxylabs E-Commerce Scraper API, use zip/postal codes (e.g., '10001' for New York, 'SW1A 1AA' for London) for the geo_location parameter
+- Handle API errors gracefully with appropriate error messages and fallback mechanisms
+- Include proper error handling for API requests to prevent application crashes
+- Log API responses for debugging purposes
+- When parsing API responses, implement robust property access paths with multiple fallback options
+- Add detailed logging of API response structures to help diagnose parsing issues
+- Use type checking and validation when extracting data from API responses
+- Implement fallback values for all extracted properties to handle missing or malformed data
+- Test API integrations with a variety of response formats to ensure robustness

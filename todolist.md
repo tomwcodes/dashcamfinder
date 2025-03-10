@@ -6,6 +6,11 @@
 - [x] Create main index.html page with filter system and results display
 - [x] Update robots.txt file for search engine crawling
 - [x] Create sitemap.xml for search engine indexing
+- [x] Implement Oxylabs API integration for Amazon product data
+- [x] Set up daily data refresh system with cron job
+- [x] Configure .env login details for Oxylabs API
+- [x] Remove dummy data from products.json
+- [x] Reset product data to only use products from PRODUCT_URLS in amazon-scraper.js
 
 ## Pending Tasks
 - [ ] Add dark mode toggle functionality
@@ -18,5 +23,5 @@
 - [ ] Add analytics tracking
 - [ ] Optimize images for faster loading
 - [ ] Implement lazy loading for product images
-- [ ] Add more dash cam products to the database
 - [ ] Create a contact form
+- [ ] Further improve feature extraction for products with missing features
