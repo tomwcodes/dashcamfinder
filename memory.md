@@ -10,13 +10,14 @@ The project has a functional implementation with the following features:
 - Daily data refresh system using cron job (runs at 06:00 GMT)
 - Filtering system by marketplace, brand, model, resolution, price range, and rating
 - Sorting options by popularity, price, rating, and release date
-- Two view modes: table view and grid view
+- Two view modes: table view (without images) and grid view (with images)
 - URL parameter management for shareable filtered views
 - Dynamic SEO updates (title, meta description)
 - Fallback to localStorage cache if JSON file can't be loaded
 - Clean product data with only products from PRODUCT_URLS in amazon-scraper.js
 - Reset script to repopulate product data from specific product URLs
 - Improved Oxylabs API response parsing with robust property access paths and fallback mechanisms
+- Marketplace-specific product filtering to ensure products only appear in their respective marketplace sections
 
 ## Project Structure
 ```

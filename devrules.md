@@ -46,3 +46,10 @@ If necessary, update the development guidelines to reflect anything you've learn
 - Use type checking and validation when extracting data from API responses
 - Implement fallback values for all extracted properties to handle missing or malformed data
 - Test API integrations with a variety of response formats to ensure robustness
+
+## Marketplace-Specific Filtering
+
+- When displaying products from multiple marketplaces (e.g., amazon.com, amazon.co.uk), ensure products only appear in their respective marketplace sections
+- Always check if a product has the required data (price, URL) for a specific marketplace before displaying it in that marketplace's section
+- Implement proper filtering in the filterProducts function to exclude products that don't have data for the selected marketplace
+- When merging product data from different sources, maintain separate price and URL fields for each marketplace

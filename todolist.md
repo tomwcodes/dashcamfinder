@@ -11,6 +11,7 @@
 - [x] Configure .env login details for Oxylabs API
 - [x] Remove dummy data from products.json
 - [x] Reset product data to only use products from PRODUCT_URLS in amazon-scraper.js
+- [x] Fix issue with amazon.com products appearing in amazon.co.uk section
 
 ## Pending Tasks
 - [ ] Add dark mode toggle functionality
@@ -21,6 +22,7 @@
 - [ ] Implement user reviews section
 - [ ] Create a privacy policy page
 - [ ] Add analytics tracking
+- [x] Remove image from list view and only include in tab view
 - [ ] Optimize images for faster loading
 - [ ] Implement lazy loading for product images
 - [ ] Create a contact form

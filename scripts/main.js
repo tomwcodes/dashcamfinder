@@ -97,6 +97,14 @@ const getResolutions = () => {
 // Filter products based on selected criteria
 const filterProducts = (filters) => {
   return dashCamProducts.filter(product => {
+    // Filter by marketplace - only show products that have prices for the selected marketplace
+    if (filters.marketplace === 'amazon_uk' && (!product.price.amazon_uk || !product.amazonUrl.uk)) {
+      return false;
+    }
+    if (filters.marketplace === 'amazon_com' && (!product.price.amazon_com || !product.amazonUrl.com)) {
+      return false;
+    }
+    
     // Filter by brand if selected
     if (filters.brand && product.brand !== filters.brand) {
       return false;
@@ -221,7 +229,6 @@ const renderProductsTable = (products, marketplace) => {
     <table class="results-table">
       <thead>
         <tr>
-          <th>Image</th>
           <th>Product</th>
           <th>Price</th>
           <th>Rating</th>
@@ -242,9 +249,6 @@ const renderProductsTable = (products, marketplace) => {
     
     tableHtml += `
       <tr>
-        <td>
-          <img src="${imageUrl}" alt="${product.brand} ${product.model}" class="product-image">
-        </td>
         <td>
           <div class="product-title">${product.brand} ${product.model}</div>
           <div class="product-resolution">${product.resolution} Resolution</div>
