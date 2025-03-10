@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DashCamFinder - Compare Dash Cam Prices and Features</title>
+    <meta name="description" content="Compare dash cam prices and features across top brands. Find the perfect dash cam for your vehicle.">
+    <meta name="keywords" content="dash cam, dashboard camera, dash cam comparison, best dash cams, dash cam prices">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://dashcamfinder.info/">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://via.placeholder.com/32x32/1a73e8/ffffff?text=D" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://via.placeholder.com/16x16/1a73e8/ffffff?text=D" sizes="16x16">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dashcamfinder.info/">
+    <meta property="og:title" content="DashCamFinder - Compare Dash Cam Prices and Features">
+    <meta property="og:description" content="Compare dash cam prices and features across top brands. Find the perfect dash cam for your vehicle.">
+    <meta property="og:image" content="https://dashcamfinder.info/images/og-image.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://dashcamfinder.info/">
+    <meta property="twitter:title" content="DashCamFinder - Compare Dash Cam Prices and Features">
+    <meta property="twitter:description" content="Compare dash cam prices and features across top brands. Find the perfect dash cam for your vehicle.">
+    <meta property="twitter:image" content="https://dashcamfinder.info/images/twitter-image.jpg">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Schema.org structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "DashCamFinder",
+      "url": "https://dashcamfinder.info/",
+      "description": "Compare dash cam prices and features across top brands. Find the perfect dash cam for your vehicle.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://dashcamfinder.info/?search={search_term}",
+        "query-input": "required name=search_term"
+      }
+    }
+    </script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">
+                <h1><a href="/" title="DashCamFinder Home">DashCamFinder</a></h1>
+                <h2>Find the Perfect Dash Cam for Your Vehicle</h2>
+            </div>
+            <nav class="site-nav">
+                <a href="buying-guide.html" class="nav-link"><i class="fas fa-book"></i> Buying Guide</a>
+                <a href="affiliate-disclosure.html" class="nav-link"><i class="fas fa-info-circle"></i> Affiliate Disclosure</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="site-main">
+        <div class="container">
+            <section class="intro-section bg-light p-3 rounded mb-4">
+                <h1 class="text-center mb-2">Compare Dash Cam Prices and Features</h1>
+                <p class="text-center mb-0">Find the perfect dash cam for your needs by comparing prices, features, and specifications across top brands.</p>
+            </section>
+            
+            <section class="filter-section">
+                <h2><i class="fas fa-filter"></i> Filter Options</h2>
+                
+                <div class="filter-controls">
+                    <div class="filter-group">
+                        <label>Marketplace</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="marketplace" value="amazon_com" checked> Amazon.com
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="marketplace" value="amazon_uk"> Amazon.co.uk
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="brand-select">Brand</label>
+                        <select id="brand-select">
+                            <option value="">All Brands</option>
+                            <!-- Populated by JavaScript -->
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="search-input">Search Model</label>
+                        <input type="text" id="search-input" placeholder="e.g. 522GW, R2-4K">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="resolution-select">Resolution</label>
+                        <select id="resolution-select">
+                            <option value="">All Resolutions</option>
+                            <!-- Populated by JavaScript -->
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="filter-controls">
+                    <div class="filter-group">
+                        <label for="min-price">Min Price</label>
+                        <input type="number" id="min-price" placeholder="Min" min="0" step="10">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="max-price">Max Price</label>
+                        <input type="number" id="max-price" placeholder="Max" min="0" step="10">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="min-rating">Min Rating</label>
+                        <select id="min-rating">
+                            <option value="">Any Rating</option>
+                            <option value="4.5">4.5+ Stars</option>
+                            <option value="4">4+ Stars</option>
+                            <option value="3.5">3.5+ Stars</option>
+                            <option value="3">3+ Stars</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>&nbsp;</label>
+                        <button id="reset-filters" class="button outline">Reset Filters</button>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="results-section">
+                <div class="results-header">
+                    <div id="results-count" class="results-count">12 dash cams found</div>
+                    
+                    <div class="sort-controls">
+                        <label for="sort-select">Sort by:</label>
+                        <select id="sort-select">
+                            <option value="popularity">Popularity</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="rating">Rating</option>
+                            <option value="newest">Newest</option>
+                        </select>
+                        
+                        <div class="view-mode-controls ml-2">
+                            <button class="button view-mode-button active" data-view="table" title="Table View">
+                                <i class="fas fa-list"></i>
+                            </button>
+                            <button class="button view-mode-button" data-view="grid" title="Grid View">
+                                <i class="fas fa-th-large"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="results-container">
+                    <!-- Results will be populated by JavaScript -->
+                </div>
+            </section>
+            
+            <section class="info-section bg-light p-3 rounded mt-4">
+                <h2>Why Choose DashCamFinder?</h2>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <h4><i class="fas fa-search"></i> Comprehensive Comparison</h4>
+                            <p>Compare dash cams across multiple criteria including price, resolution, features, and user ratings.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <h4><i class="fas fa-tag"></i> Real-Time Pricing</h4>
+                            <p>Get up-to-date pricing information from major retailers to ensure you find the best deals.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <h4><i class="fas fa-book"></i> Expert Guidance</h4>
+                            <p>Access our comprehensive <a href="buying-guide.html">Buying Guide</a> to learn what features matter most for your needs.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-section">
+                <p>As an Amazon Associate I earn from qualifying purchases. Product prices and availability are accurate as of the date/time indicated and are subject to change.</p>
+                <p>CERTAIN CONTENT THAT APPEARS ON THIS SITE COMES FROM AMAZON SERVICES LLC. THIS CONTENT IS PROVIDED 'AS IS' AND IS SUBJECT TO CHANGE OR REMOVAL AT ANY TIME.</p>
+                <p>© 2025 DashCamFinder. All rights reserved.</p>
+            </div>
+            <div class="footer-links">
+                <a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
+                <a href="affiliate-disclosure.html"><i class="fas fa-info-circle"></i> Affiliate Disclosure</a>
+                <a href="mailto:tomwcodes@gmail.com"><i class="fas fa-envelope"></i> tomwcodes@gmail.com</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="scripts/main.js"></script>
+</body>
+</html>
