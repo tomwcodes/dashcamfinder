@@ -265,8 +265,9 @@ const renderProductsTable = (products, marketplace) => {
         </td>
         <td>
           <div class="product-rating">
+            <div class="rating-number">${product.rating}</div>
             <div class="stars">${generateStarRating(product.rating)}</div>
-            <span>${product.rating} (${product.reviewCount > 0 ? product.reviewCount.toLocaleString() : 'No reviews yet'})</span>
+            <div class="review-count">${product.reviewCount > 0 ? product.reviewCount.toLocaleString() + ' ratings' : 'No reviews yet'}</div>
           </div>
         </td>
         <td>
@@ -323,8 +324,9 @@ const renderProductsGrid = (products, marketplace) => {
           <h3 class="product-card-title">${product.brand} ${product.model}</h3>
           <div class="product-card-price">${formatPrice(price, marketplace)}</div>
           <div class="product-card-rating">
+            <div class="rating-number">${product.rating}</div>
             <div class="stars">${generateStarRating(product.rating)}</div>
-            <span>${product.rating} (${product.reviewCount > 0 ? product.reviewCount.toLocaleString() : 'No reviews yet'})</span>
+            <div class="review-count">${product.reviewCount > 0 ? product.reviewCount.toLocaleString() + ' ratings' : 'No reviews yet'}</div>
           </div>
           <div class="product-card-features">
             <ul>

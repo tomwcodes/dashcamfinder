@@ -424,7 +424,7 @@ button.outline:hover, .button.outline:hover {
 .results-table th,
 .results-table td {
   padding: var(--space-md);
-  text-align: left;
+  text-align: center;
   border-bottom: 1px solid var(--neutral-200);
 }
 
@@ -460,12 +460,26 @@ button.outline:hover, .button.outline:hover {
 
 .product-rating {
   display: flex;
+  flex-direction: column;
   align-items: center;
+  text-align: center;
+}
+
+.rating-number {
+  font-weight: 600;
+  margin-bottom: var(--space-xs);
 }
 
 .stars {
   color: #ffc107;
-  margin-right: var(--space-xs);
+  display: flex;
+  flex-direction: row;
+  margin-bottom: var(--space-xs);
+}
+
+.review-count {
+  font-size: var(--font-size-sm);
+  color: var(--neutral-600);
 }
 
 .product-features {
@@ -536,6 +550,10 @@ button.outline:hover, .button.outline:hover {
 }
 
 .product-card-rating {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
   margin-bottom: var(--space-sm);
 }
 

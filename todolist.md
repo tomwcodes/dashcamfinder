@@ -13,6 +13,7 @@
 - [x] Reset product data to only use products from PRODUCT_URLS in amazon-scraper.js
 - [x] Fix issue with amazon.com products appearing in amazon.co.uk section
 - [x] Add brand and resolution columns to search results table
+- [x] Change rating stars display from vertical to horizontal layout
 
 ## Pending Tasks
 - [ ] Add dark mode toggle functionality
