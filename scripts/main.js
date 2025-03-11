@@ -474,7 +474,7 @@ const renderProductsGrid = (products, marketplace) => {
 // Update results count
 const updateResultsCount = (count) => {
   const resultsCount = document.getElementById('results-count');
-  resultsCount.textContent = `${count} dash cams found`;
+  resultsCount.textContent = `${count} Results`;
 };
 
 // Update URL parameters to make filtered views shareable

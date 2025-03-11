@@ -67,21 +67,30 @@
                 <p class="text-center mb-0">Find the perfect dash cam for your needs by comparing prices, features, and specifications across top brands.</p>
             </section>
             
-            <section class="filter-section">
-                <h2><i class="fas fa-filter"></i> Filter Options</h2>
-                
-                <div class="filter-controls">
-                    <div class="filter-group">
-                        <label>Marketplace</label>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="marketplace" value="amazon_com" checked> Amazon.com
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="marketplace" value="amazon_uk"> Amazon.co.uk
-                            </label>
-                        </div>
-                    </div>
+    <section class="marketplace-selector">
+        <div class="container">
+            <div class="region-selector">
+                <span class="region-label">Select Region:</span>
+                <div class="region-options">
+                    <label class="region-option">
+                        <input type="radio" name="marketplace" value="amazon_com" checked> 
+                        <span class="region-flag us-flag"><i class="fas fa-flag-usa"></i></span>
+                        <span class="region-name">United States (Amazon.com)</span>
+                    </label>
+                    <label class="region-option">
+                        <input type="radio" name="marketplace" value="amazon_uk">
+                        <span class="region-flag uk-flag"><i class="fas fa-flag"></i></span>
+                        <span class="region-name">United Kingdom (Amazon.co.uk)</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="filter-section">
+        <h2><i class="fas fa-filter"></i> Filter Options</h2>
+        
+        <div class="filter-controls">
                     
                     <div class="filter-group">
                         <label for="brand-select">Brand</label>
