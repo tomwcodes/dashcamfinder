@@ -8,7 +8,8 @@ The project has a functional implementation with the following features:
 - Responsive design with CSS variables for consistent theming
 - Product data fetched from Amazon using Oxylabs API and stored in JSON file
 - Daily data refresh system using cron job (runs at 06:00 GMT)
-- Filtering system by marketplace, brand, model, resolution, price range, and rating
+- Advanced filtering system with multi-select checkbox dropdown for specifications (resolution, video features, physical specs, connectivity, and features)
+- Filtering system by marketplace, brand, model, price range, and rating
 - Sorting options by popularity, price, rating, and release date
 - Single grid view with product cards for better mobile display
 - Comprehensive product cards with images, specs, and expandable details
@@ -71,6 +72,6 @@ The next development priorities are:
 2. Implement search functionality for all product text
 3. Add product comparison feature
 4. Create a "Recently Viewed" section using localStorage
-5. Add more detailed feature filters
+5. Implement user reviews section
 
 See todolist.md for a complete list of pending tasks.

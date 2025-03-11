@@ -53,3 +53,15 @@ If necessary, update the development guidelines to reflect anything you've learn
 - Always check if a product has the required data (price, URL) for a specific marketplace before displaying it in that marketplace's section
 - Implement proper filtering in the filterProducts function to exclude products that don't have data for the selected marketplace
 - When merging product data from different sources, maintain separate price and URL fields for each marketplace
+
+## Advanced Filtering with Multi-Select Dropdowns
+
+- Use a structured approach for specification filtering with category:property:value format (e.g., "video:hdr", "physical:fov:140")
+- Implement checkbox dropdowns for multi-select filtering to allow users to select multiple specifications simultaneously
+- Group related specifications into logical categories (e.g., Video, Physical, Connectivity, Features)
+- Display selected filters as removable tags to improve user experience
+- Ensure URL parameters include all selected specifications for shareable filtered views
+- Update SEO metadata (title, description) based on selected specifications
+- Implement proper event delegation for dynamically added filter tags
+- Use debouncing for filter operations that may be triggered frequently
+- Ensure the dropdown closes when clicking outside to follow standard UI patterns

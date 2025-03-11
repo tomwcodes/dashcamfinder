@@ -93,11 +93,17 @@ const getBrands = () => {
   return Array.from(brands).sort();
 };
 
-// Get unique resolutions for the filter dropdown
-const getResolutions = () => {
-  const resolutions = new Set();
-  dashCamProducts.forEach(product => resolutions.add(product.resolution));
-  return Array.from(resolutions).sort();
+// Get unique specifications for the filter dropdown - no longer needed as we're using hardcoded checkboxes
+// This function is kept for reference but not used
+const getSpecifications = () => {
+  // This would be used if we were dynamically generating the specification checkboxes
+  return {
+    resolutions: ['4K', '1440p', '1080p', '720p'],
+    videoFeatures: ['HDR', 'WDR', 'Night Vision'],
+    physicalFeatures: ['140°+ FOV', '160°+ FOV', 'Dual Channel'],
+    connectivity: ['WiFi', 'Bluetooth', 'GPS', 'Voice Control'],
+    features: ['Parking Mode', 'Motion Detection', 'Loop Recording', 'Emergency Recording']
+  };
 };
 
 // Filter products based on selected criteria
@@ -121,9 +127,46 @@ const filterProducts = (filters) => {
       return false;
     }
     
-    // Filter by resolution if selected
-    if (filters.resolution && product.resolution !== filters.resolution) {
-      return false;
+    // Filter by selected specifications
+    if (filters.selectedSpecs && filters.selectedSpecs.length > 0) {
+      // Check each selected specification
+      for (const specFilter of filters.selectedSpecs) {
+        const [category, property, value] = specFilter.split(':');
+        
+        // Handle resolution filters
+        if (category === 'resolution') {
+          if (product.resolution !== property) {
+            return false;
+          }
+          continue;
+        }
+        
+        // Get the appropriate specs object based on the category
+        const specs = product.specs || {};
+        const categorySpecs = specs[category] || {};
+        
+        // Check if the property exists and matches the value (if provided)
+        if (value) {
+          // For numeric comparisons (e.g., FOV >= 140)
+          const numValue = parseInt(value, 10);
+          if (!isNaN(numValue)) {
+            if (category === 'physical' && property === 'fov') {
+              if (!categorySpecs[property] || categorySpecs[property] < numValue) {
+                return false;
+              }
+            } else if (category === 'physical' && property === 'channels') {
+              if (!categorySpecs[property] || categorySpecs[property] < numValue) {
+                return false;
+              }
+            }
+          }
+        } else {
+          // For boolean properties (e.g., wifi, parkingMode)
+          if (!categorySpecs[property]) {
+            return false;
+          }
+        }
+      }
     }
     
     // Filter by price range if provided
@@ -505,10 +548,14 @@ const updateUrlParams = (filters, sortBy, viewMode) => {
   if (filters.marketplace) url.searchParams.set('marketplace', filters.marketplace);
   if (filters.brand) url.searchParams.set('brand', filters.brand);
   if (filters.searchText) url.searchParams.set('search', filters.searchText);
-  if (filters.resolution) url.searchParams.set('resolution', filters.resolution);
   if (filters.minPrice) url.searchParams.set('minPrice', filters.minPrice);
   if (filters.maxPrice) url.searchParams.set('maxPrice', filters.maxPrice);
   if (filters.minRating) url.searchParams.set('minRating', filters.minRating);
+  
+  // Add selected specifications to URL
+  if (filters.selectedSpecs && filters.selectedSpecs.length > 0) {
+    url.searchParams.set('specs', filters.selectedSpecs.join(','));
+  }
   
   // Add sort and view parameters
   if (sortBy) url.searchParams.set('sort', sortBy);
@@ -524,12 +571,15 @@ const updateUrlParams = (filters, sortBy, viewMode) => {
     title = `${filters.brand} Dash Cams - Compare Prices and Features | DashCamFinder`;
   }
   
-  if (filters.resolution) {
-    title = `${filters.resolution} Dash Cams - High Resolution Comparison | DashCamFinder`;
-  }
-  
-  if (filters.brand && filters.resolution) {
-    title = `${filters.brand} ${filters.resolution} Dash Cams | DashCamFinder`;
+  // Check if there are resolution specs selected
+  const resolutionSpecs = filters.selectedSpecs ? filters.selectedSpecs.filter(spec => spec.startsWith('resolution:')) : [];
+  if (resolutionSpecs.length === 1) {
+    const resolution = resolutionSpecs[0].split(':')[1];
+    if (filters.brand) {
+      title = `${filters.brand} ${resolution} Dash Cams | DashCamFinder`;
+    } else {
+      title = `${resolution} Dash Cams - High Resolution Comparison | DashCamFinder`;
+    }
   }
   
   document.title = title;
@@ -543,12 +593,13 @@ const updateUrlParams = (filters, sortBy, viewMode) => {
       description = `Compare ${filters.brand} dash cam prices and features. Find the best ${filters.brand} dash cam for your vehicle.`;
     }
     
-    if (filters.resolution) {
-      description = `Compare ${filters.resolution} dash cam prices and features. High resolution dash cams for crystal clear footage.`;
-    }
-    
-    if (filters.brand && filters.resolution) {
-      description = `Compare ${filters.brand} ${filters.resolution} dash cam prices and features. Find the best high-resolution dash cam for your needs.`;
+    if (resolutionSpecs.length === 1) {
+      const resolution = resolutionSpecs[0].split(':')[1];
+      if (filters.brand) {
+        description = `Compare ${filters.brand} ${resolution} dash cam prices and features. Find the best high-resolution dash cam for your needs.`;
+      } else {
+        description = `Compare ${resolution} dash cam prices and features. High resolution dash cams for crystal clear footage.`;
+      }
     }
     
     metaDescription.setAttribute('content', description);
@@ -559,16 +610,20 @@ const updateUrlParams = (filters, sortBy, viewMode) => {
 const getUrlParams = () => {
   const urlParams = new URLSearchParams(window.location.search);
   
+  // Get selected specs from URL
+  const specsParam = urlParams.get('specs');
+  const selectedSpecs = specsParam ? specsParam.split(',') : [];
+  
   return {
     marketplace: urlParams.get('marketplace') || 'amazon_com',
     brand: urlParams.get('brand') || '',
     searchText: urlParams.get('search') || '',
-    resolution: urlParams.get('resolution') || '',
+    selectedSpecs: selectedSpecs,
     minPrice: urlParams.get('minPrice') ? parseFloat(urlParams.get('minPrice')) : '',
     maxPrice: urlParams.get('maxPrice') ? parseFloat(urlParams.get('maxPrice')) : '',
     minRating: urlParams.get('minRating') ? parseFloat(urlParams.get('minRating')) : '',
     sortBy: urlParams.get('sort') || 'popularity',
-    viewMode: urlParams.get('view') || 'table'
+    viewMode: urlParams.get('view') || 'grid'
   };
 };
 
@@ -590,7 +645,6 @@ const initPage = () => {
   const marketplaceRadios = document.querySelectorAll('input[name="marketplace"]');
   const brandSelect = document.getElementById('brand-select');
   const searchInput = document.getElementById('search-input');
-  const resolutionSelect = document.getElementById('resolution-select');
   const minPriceInput = document.getElementById('min-price');
   const maxPriceInput = document.getElementById('max-price');
   const minRatingSelect = document.getElementById('min-rating');
@@ -612,13 +666,43 @@ const initPage = () => {
   });
   brandSelect.innerHTML = brandOptionsHtml;
   
-  // Populate resolution dropdown
-  const resolutions = getResolutions();
-  let resolutionOptionsHtml = '<option value="">All Resolutions</option>';
-  resolutions.forEach(resolution => {
-    resolutionOptionsHtml += `<option value="${resolution}" ${params.resolution === resolution ? 'selected' : ''}>${resolution}</option>`;
+  // Set up the multi-select dropdown for specifications
+  const multiSelectDropdown = document.querySelector('.multi-select-dropdown');
+  const dropdownTrigger = document.querySelector('.dropdown-trigger');
+  const dropdownContent = document.querySelector('.dropdown-content');
+  const selectedSpecsContainer = document.getElementById('selected-specs');
+  const specCheckboxes = document.querySelectorAll('input[name="specs"]');
+  
+  // Toggle dropdown when clicking the trigger
+  dropdownTrigger.addEventListener('click', () => {
+    multiSelectDropdown.classList.toggle('active');
   });
-  resolutionSelect.innerHTML = resolutionOptionsHtml;
+  
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!multiSelectDropdown.contains(e.target)) {
+      multiSelectDropdown.classList.remove('active');
+    }
+  });
+  
+  // Check the checkboxes based on URL parameters
+  params.selectedSpecs.forEach(specValue => {
+    const checkbox = document.querySelector(`input[name="specs"][value="${specValue}"]`);
+    if (checkbox) {
+      checkbox.checked = true;
+    }
+  });
+  
+  // Add event listeners to checkboxes
+  specCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', () => {
+      updateSelectedSpecsDisplay();
+      applyFilters();
+    });
+  });
+  
+  // Initial update of selected specs display
+  updateSelectedSpecsDisplay();
   
   // Set other form values
   searchInput.value = params.searchText;
@@ -639,7 +723,6 @@ const initPage = () => {
   
   brandSelect.addEventListener('change', applyFilters);
   searchInput.addEventListener('input', debounce(applyFilters, 300));
-  resolutionSelect.addEventListener('change', applyFilters);
   minPriceInput.addEventListener('input', debounce(applyFilters, 300));
   maxPriceInput.addEventListener('input', debounce(applyFilters, 300));
   minRatingSelect.addEventListener('change', applyFilters);
@@ -654,14 +737,53 @@ const initPage = () => {
     document.querySelector('input[name="marketplace"][value="amazon_com"]').checked = true;
     brandSelect.value = '';
     searchInput.value = '';
-    resolutionSelect.value = '';
     minPriceInput.value = '';
     maxPriceInput.value = '';
     minRatingSelect.value = '';
     sortSelect.value = 'popularity';
     
+    // Uncheck all specification checkboxes
+    specCheckboxes.forEach(checkbox => {
+      checkbox.checked = false;
+    });
+    
+    // Update selected specs display
+    updateSelectedSpecsDisplay();
+    
     // Apply filters
     applyFilters();
+  });
+};
+
+// Function to update the display of selected specifications
+const updateSelectedSpecsDisplay = () => {
+  const selectedSpecsContainer = document.getElementById('selected-specs');
+  const checkedCheckboxes = document.querySelectorAll('input[name="specs"]:checked');
+  
+  // Clear the container
+  selectedSpecsContainer.innerHTML = '';
+  
+  // Add a tag for each selected specification
+  checkedCheckboxes.forEach(checkbox => {
+    const value = checkbox.value;
+    const label = checkbox.parentElement.textContent.trim();
+    
+    const tag = document.createElement('span');
+    tag.className = 'selected-filter-tag';
+    tag.innerHTML = `${label} <span class="remove-tag" data-value="${value}"><i class="fas fa-times"></i></span>`;
+    
+    // Add click event to remove tag
+    tag.querySelector('.remove-tag').addEventListener('click', (e) => {
+      const value = e.currentTarget.dataset.value;
+      const checkbox = document.querySelector(`input[name="specs"][value="${value}"]`);
+      if (checkbox) {
+        checkbox.checked = false;
+        updateSelectedSpecsDisplay();
+        applyFilters();
+      }
+    });
+    
+    selectedSpecsContainer.appendChild(tag);
   });
 };
 
@@ -671,11 +793,14 @@ const applyFilters = () => {
   const marketplace = document.querySelector('input[name="marketplace"]:checked').value;
   const brand = document.getElementById('brand-select').value;
   const searchText = document.getElementById('search-input').value;
-  const resolution = document.getElementById('resolution-select').value;
   const minPrice = document.getElementById('min-price').value ? parseFloat(document.getElementById('min-price').value) : '';
   const maxPrice = document.getElementById('max-price').value ? parseFloat(document.getElementById('max-price').value) : '';
   const minRating = document.getElementById('min-rating').value ? parseFloat(document.getElementById('min-rating').value) : '';
   const sortBy = document.getElementById('sort-select').value;
+  
+  // Get selected specifications
+  const checkedCheckboxes = document.querySelectorAll('input[name="specs"]:checked');
+  const selectedSpecs = Array.from(checkedCheckboxes).map(checkbox => checkbox.value);
   
   // View mode handling removed - using only grid view
   const viewMode = 'grid'; // Always use grid view
@@ -685,7 +810,7 @@ const applyFilters = () => {
     marketplace,
     brand,
     searchText,
-    resolution,
+    selectedSpecs,
     minPrice,
     maxPrice,
     minRating

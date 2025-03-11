@@ -18,13 +18,13 @@
 - [x] Remove list view and keep only grid view for better mobile display
 - [x] Remove features and resolution columns from results data
 - [x] Fix duplicate resolution text in list view specs column
+- [x] Add more detailed feature filters (GPS, WiFi, Parking Mode, etc.)
 
 ## Pending Tasks
 - [ ] Add dark mode toggle functionality
 - [ ] Implement search functionality for all product text (not just model)
 - [ ] Add product comparison feature to compare multiple dash cams side by side
 - [ ] Create a "Recently Viewed" section using localStorage
-- [ ] Add more detailed feature filters (GPS, WiFi, Parking Mode, etc.)
 - [ ] Implement user reviews section
 - [ ] Create a privacy policy page
 - [ ] Add analytics tracking

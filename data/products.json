@@ -14,63 +14,61 @@
     "releaseDate": "2024-03-11",
     "popularity": 93,
     "amazonUrl": {
-      "com": "https://www.amazon.com/R2-4K-Dashboard-Camera-Recorder-Vision/dp/B074JT3698?crid=2W6BWJQT6YEUA&dib=eyJ2IjoiMSJ9.1Lu9xcf_hwhWUMYD1RV-ycwASy-_cRC_lznnyw8duv1rI8HYvVg9zlmSJiUj4LMLJozQa_hAo3PWAn2HdhWl5tQ59MB0pVxJdCjYaU2k5mtv5h9fcl-MVhLcnrnVacmn4FnG6VfilwxhEZDZVUpbkk_Du7FqP4d5Q4nssYExg8-5lzdjMxTo1NNpjSXXGsACw-pgrGPoya7UPCmnSxzp707DJa5B8CyMYbcOs_YHb9I.heODLDTVfhRZQgINPX9JEX11Id_MN31xvV-LkmzGPbo&dib_tag=se&keywords=dash+cam&qid=1741639570&sprefix=garmin+dash+cam,aps,888&sr=8-10"
+      "com": "https://www.amazon.com/ROVE-Dashboard-Recorder-G-Sensor-Recording/dp/B074JT3698"
     }
   },
   {
-    "id": 6026,
-    "brand": "VIOFO",
-    "model": "A229 Pro 4K HDR , Dual STARVIS 2 IMX678 IMX675, 4K+2K Front and Rear , 2 Channel with HDR, Voice Control, 5GHz WiFi GPS, Night Vision 2.0, 24H Parking Mode, Support 512GB Max",
-    "image": "https://m.media-amazon.com/images/I/71jxrykoxwL._AC_SL1500_.jpg",
+    "id": 7815,
+    "brand": "CHORTAU",
+    "model": "Front and Rear  Dual  3 inch  Full HD 170° Wide Angle Backup Camera with Night Vision WDR G-Sensor Parking Monitor Loop Recording Motion Detection",
+    "image": "https://m.media-amazon.com/images/I/71YgezI8JZL._AC_SL1486_.jpg",
     "price": {
-      "amazon_uk": 299.99
-    },
-    "rating": 4.9,
-    "reviewCount": 22,
-    "resolution": "4K",
-    "features": [],
-    "releaseDate": "2024-03-11",
-    "popularity": 49,
-    "amazonUrl": {
-      "uk": "https://www.amazon.co.uk/VIOFO-A229-Pro-STARVIS-Channel-Black/dp/B0CLV37QKG?crid=2BO5ZP36UIQXE&dib=eyJ2IjoiMSJ9.G7xZ7kIen1E1JV33YFS5GhH_2S-ZoA46-dJ36JHhb7faGApHE5IUnbmTdvooi7nL7T1qNdX4uSBkMx-gfUW8stnOfdhCjTVdlN3m9fRZ0GCRFKSJs2EGVWEPjr9CP_IWF_IHniwFY_w2YX4uelMi09hKgPl5YGdtbXUu5AgyA2MOyvfqziFuthuMYPPeAzBXO88fDTCx_9POppyej5xOXp5Kp_7UwjObY-xgvFhBlco.vbHh68BPzAQQgHj9rFDxFZVQL66iALQDw01DkFu5YbE&dib_tag=se&keywords=viofo+a229+pro&qid=1741639737&sprefix=viofo,aps,413&sr=8-4"
-    }
-  },
-  {
-    "id": 2269,
-    "brand": "Garmin",
-    "model": "67W, 1440p and extra-wide 180-degree FOV, Monitor Your Vehicle While Away w/ New Connected Features, Voice Control, Compact and Discreet, Includes Memory Card - 010-02505-05",
-    "image": "https://m.media-amazon.com/images/I/614VoTbsIBL._AC_SL1200_.jpg",
-    "price": {
-      "amazon_com": 184.95
+      "amazon_com": -1
     },
     "rating": 4.1,
-    "reviewCount": 1059,
+    "reviewCount": 27686,
+    "resolution": "1080p",
+    "features": [],
+    "releaseDate": "2024-03-11",
+    "popularity": 91,
+    "amazonUrl": {
+      "com": "https://www.amazon.com/REDTIGER-Recorder-Dashboard-G-Sensor-Recording/dp/B07Q5R22DV"
+    }
+  },
+  {
+    "id": 2534,
+    "brand": "VIOFO",
+    "model": "A119 V3 2K 2560x1440P Quad HD+ 60FPS Front Car era, 5MP STARVIS Sensor, 140-Degree Wide Angle, GPS Included, Buffered Parking Mode, True HDR, Motion Detection, Time Lapse",
+    "image": "https://m.media-amazon.com/images/I/71fOFkbtcML._AC_SL1500_.jpg",
+    "price": {
+      "amazon_com": 119.99
+    },
+    "rating": 4.4,
+    "reviewCount": 6782,
     "resolution": "1440p",
-    "features": [
-      "Small camera, big protection. The pocket-sized Garmin Dash Cam™ 67W with voice control (only available in English, German, French, Spanish, Italian and Swedish) automatically records 1440p video and provides discreet eyewitness incident detection. Its extra-wide 180-degree lens shows more of the environment, including cross traffic. Notice: Some jurisdictions regulate or prohibit use of this device. It is your responsibility to know and comply with applicable laws and rights to privacy in jurisdictions where you plan to use this device."
-    ],
+    "features": [],
+    "releaseDate": "2024-03-11",
+    "popularity": 78,
+    "amazonUrl": {
+      "com": "https://www.amazon.com/70mai-Dashboard-Recording-G-Sensor-Parking/dp/B07SRQH4R7"
+    }
+  },
+  {
+    "id": 9694,
+    "brand": "REXING",
+    "model": "Rexing V1 Basic  1080P FHD DVR Car Driving Recorder, 2.4\" LCD Screen 170°Wide Angle, G-Sensor, WDR, Parking Monitor, Loop Recording",
+    "image": "https://m.media-amazon.com/images/I/7110BsMliaL._AC_SL1500_.jpg",
+    "price": {
+      "amazon_com": -1
+    },
+    "rating": 4.2,
+    "reviewCount": 724,
+    "resolution": "1080p",
+    "features": [],
     "releaseDate": "2024-03-11",
     "popularity": 46,
     "amazonUrl": {
-      "com": "https://www.amazon.com/Garmin-Extra-Wide-180-degree-Connected-Features/dp/B093244D1J?crid=37G8IKX6C288S&dib=eyJ2IjoiMSJ9.J7XVKz8MNSLeQCT3IDQFoy86etXo3dNNRpIuLVm5Mr15SurAJYK6nOtkSbbJ_JAWTwXQh1eLU2DtYmKTu2rz7Rr7AgySc6wtbVWvwz59vaDdItv-axi6q3Z8heLsyVAqWtrnyzNrTrSVrQU7pKPkdw5bAPGqxsJ7gltzI2Z4t4T13ZwZr22WaG6cCdWCcQvAn_Z-kFcLGRT7g_TgH8I04tIIMaB3hbjh3Yb9QPTjbOc.lgsO3yWi3cnkk8gF-dMd-XyHSm1MYYwkTqzRFPgjlCY&dib_tag=se&keywords=garmin+dash+cam&qid=1741621029&sprefix=garmin+dash+cam,aps,804&sr=8-3"
-    }
-  },
-  {
-    "id": 6326,
-    "brand": "Garmin",
-    "model": "67W, 1440p and Extra-Wide 180-degree FOV, Monitor Your Vehicle While Away w/ New Connected Features, Voice Control, Compact and Discreet (International Version)",
-    "image": "https://m.media-amazon.com/images/I/71doVrSH0WL._AC_SL1500_.jpg",
-    "price": {
-      "amazon_com": 189.99
-    },
-    "rating": 4.2,
-    "reviewCount": 457,
-    "resolution": "1440p",
-    "features": [],
-    "releaseDate": "2024-03-11",
-    "popularity": 44,
-    "amazonUrl": {
-      "com": "https://www.amazon.com/Garmin-Extra-Wide-180-degree-Connected-International/dp/B094Y1BP18?crid=2KRUAMQ92U6PU&dib=eyJ2IjoiMSJ9.mY___zHn-VEdfQspSZHPEhO0UK8AWkzyHIld0tg3IQchG0AtRxHI_Vu8IyLM_GR5TwXQh1eLU2DtYmKTu2rz7TAHA3OBCSIwVTjapinwbXXuNssHI6FMBttn95qlJ8vY-F10Wm0AcXOqo9AWIWx2Tqk-8uQ5d0FlpShvaS4umMqDhnTwx6W-cs2DNz1pP4fWsWDwLNQBsUYLMyav6TqfBxqFCq3Ji-JWzUkd48WZ9Rs.CUWIPPKyzC48E-ai_twGF4hnTLlAAPtacKDpqmyq2xI&dib_tag=se&keywords=garmin+dash+cam&qid=1741639510&sprefix=garmin+dash+cam,aps,280&sr=8-3"
+      "com": "https://www.amazon.com/REDTIGER-Dashboard-G-Sensor-Recording-Detection/dp/B07RLTXMWS"
     }
   }
 ]

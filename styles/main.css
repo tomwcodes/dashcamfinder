@@ -3,6 +3,137 @@
    and responsive design for all device sizes
 */
 
+/* Multi-select Dropdown Styles */
+.multi-select-dropdown {
+  position: relative;
+  width: 100%;
+}
+
+.dropdown-trigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: var(--space-sm);
+  background-color: white;
+  border: 1px solid var(--neutral-300);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.dropdown-trigger:hover {
+  border-color: var(--primary-color);
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: white;
+  border: 1px solid var(--neutral-300);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  z-index: var(--z-above);
+  margin-top: var(--space-xs);
+  padding: var(--space-md);
+}
+
+.multi-select-dropdown.active .dropdown-content {
+  display: block;
+}
+
+.spec-group {
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--neutral-200);
+}
+
+.spec-group:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.spec-group h4 {
+  color: var(--primary-color);
+  margin-bottom: var(--space-sm);
+  font-weight: 600;
+}
+
+.checkbox-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding-left: var(--space-xs);
+}
+
+.checkbox-option {
+  display: flex;
+  align-items: flex-start;
+  cursor: pointer;
+  padding: var(--space-xs);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast);
+  line-height: 1.2;
+}
+
+.checkbox-option:hover {
+  background-color: var(--neutral-100);
+}
+
+.checkbox-option input[type="checkbox"] {
+  margin-right: var(--space-sm);
+  min-width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.selected-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+.selected-filter-tag {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--neutral-100);
+  border: 1px solid var(--neutral-300);
+  border-radius: var(--radius-full);
+  padding: 4px var(--space-md);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-xs);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.selected-filter-tag:hover {
+  background-color: var(--neutral-200);
+  border-color: var(--neutral-400);
+}
+
+.selected-filter-tag .remove-tag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: var(--space-sm);
+  cursor: pointer;
+  color: var(--neutral-600);
+  transition: color var(--transition-fast);
+  height: 16px;
+  width: 16px;
+}
+
+.selected-filter-tag .remove-tag:hover {
+  color: var(--primary-color);
+}
+
 :root {
   /* Color Palette */
   --primary-color: #1a73e8;

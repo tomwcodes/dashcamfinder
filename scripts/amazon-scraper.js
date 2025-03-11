@@ -25,11 +25,20 @@ const AMAZON_SEARCH_URLS = [
 
 // Product URLs - Add specific product URLs you want to scrape
 const PRODUCT_URLS = [
-  'https://www.amazon.com/Garmin-Extra-Wide-180-degree-Connected-Features/dp/B093244D1J?crid=37G8IKX6C288S&dib=eyJ2IjoiMSJ9.J7XVKz8MNSLeQCT3IDQFoy86etXo3dNNRpIuLVm5Mr15SurAJYK6nOtkSbbJ_JAWTwXQh1eLU2DtYmKTu2rz7Rr7AgySc6wtbVWvwz59vaDdItv-axi6q3Z8heLsyVAqWtrnyzNrTrSVrQU7pKPkdw5bAPGqxsJ7gltzI2Z4t4T13ZwZr22WaG6cCdWCcQvAn_Z-kFcLGRT7g_TgH8I04tIIMaB3hbjh3Yb9QPTjbOc.lgsO3yWi3cnkk8gF-dMd-XyHSm1MYYwkTqzRFPgjlCY&dib_tag=se&keywords=garmin+dash+cam&qid=1741621029&sprefix=garmin+dash+cam%2Caps%2C804&sr=8-3',
-  'https://www.amazon.com/Garmin-Extra-Wide-180-degree-Connected-International/dp/B094Y1BP18?crid=2KRUAMQ92U6PU&dib=eyJ2IjoiMSJ9.mY___zHn-VEdfQspSZHPEhO0UK8AWkzyHIld0tg3IQchG0AtRxHI_Vu8IyLM_GR5TwXQh1eLU2DtYmKTu2rz7TAHA3OBCSIwVTjapinwbXXuNssHI6FMBttn95qlJ8vY-F10Wm0AcXOqo9AWIWx2Tqk-8uQ5d0FlpShvaS4umMqDhnTwx6W-cs2DNz1pP4fWsWDwLNQBsUYLMyav6TqfBxqFCq3Ji-JWzUkd48WZ9Rs.CUWIPPKyzC48E-ai_twGF4hnTLlAAPtacKDpqmyq2xI&dib_tag=se&keywords=garmin+dash+cam&qid=1741639510&sprefix=garmin+dash+cam%2Caps%2C280&sr=8-3',
-  'https://www.amazon.com/R2-4K-Dashboard-Camera-Recorder-Vision/dp/B074JT3698?crid=2W6BWJQT6YEUA&dib=eyJ2IjoiMSJ9.1Lu9xcf_hwhWUMYD1RV-ycwASy-_cRC_lznnyw8duv1rI8HYvVg9zlmSJiUj4LMLJozQa_hAo3PWAn2HdhWl5tQ59MB0pVxJdCjYaU2k5mtv5h9fcl-MVhLcnrnVacmn4FnG6VfilwxhEZDZVUpbkk_Du7FqP4d5Q4nssYExg8-5lzdjMxTo1NNpjSXXGsACw-pgrGPoya7UPCmnSxzp707DJa5B8CyMYbcOs_YHb9I.heODLDTVfhRZQgINPX9JEX11Id_MN31xvV-LkmzGPbo&dib_tag=se&keywords=dash+cam&qid=1741639570&sprefix=garmin+dash+cam%2Caps%2C888&sr=8-10',
-  'https://www.amazon.co.uk/VIOFO-A229-Pro-STARVIS-Channel-Black/dp/B0CLV37QKG?crid=2BO5ZP36UIQXE&dib=eyJ2IjoiMSJ9.G7xZ7kIen1E1JV33YFS5GhH_2S-ZoA46-dJ36JHhb7faGApHE5IUnbmTdvooi7nL7T1qNdX4uSBkMx-gfUW8stnOfdhCjTVdlN3m9fRZ0GCRFKSJs2EGVWEPjr9CP_IWF_IHniwFY_w2YX4uelMi09hKgPl5YGdtbXUu5AgyA2MOyvfqziFuthuMYPPeAzBXO88fDTCx_9POppyej5xOXp5Kp_7UwjObY-xgvFhBlco.vbHh68BPzAQQgHj9rFDxFZVQL66iALQDw01DkFu5YbE&dib_tag=se&keywords=viofo+a229+pro&qid=1741639737&sprefix=viofo%2Caps%2C413&sr=8-4',
-  // Add more product URLs as needed
+  // Garmin dash cams (these have been verified to work)
+  'https://www.amazon.com/Garmin-Voice-Control-Display-Camera/dp/B07R638L8N', // Garmin Dash Cam 66W
+  // REDTIGER dash cams (these have been verified to work)
+  'https://www.amazon.com/REDTIGER-Dashboard-G-Sensor-Recording-Detection/dp/B07RLTXMWS', // REDTIGER F7N
+  // Rove dash cams (these have been verified to work)
+  'https://www.amazon.com/ROVE-Dashboard-Recorder-G-Sensor-Recording/dp/B074JT3698', // ROVE R2-4K
+  // Additional popular dash cams
+  'https://www.amazon.com/REDTIGER-Recorder-Dashboard-G-Sensor-Recording/dp/B07Q5R22DV', // REDTIGER F7N 4K
+  'https://www.amazon.com/70mai-Dashboard-Recording-G-Sensor-Parking/dp/B07SRQH4R7', // 70mai Pro
+  'https://www.amazon.com/CHORTAU-Dashboard-G-Sensor-Recording-Detection/dp/B07Q5R22DV', // CHORTAU Dash Cam
+  'https://www.amazon.com/APEMAN-Dashboard-G-Sensor-Recording-Detection/dp/B07GRV85NP', // APEMAN Dash Cam
+  'https://www.amazon.com/Kingslim-Dashboard-Enhanced-G-Sensor-Recording/dp/B08LMWN7SL', // Kingslim D4
+  'https://www.amazon.com/AUKEY-Dashboard-Supercapacitor-Recording-Detection/dp/B072FGL63X', // AUKEY DR02
+  'https://www.amazon.com/Crosstour-Dashboard-Recorder-Recording-Detection/dp/B07DVJ5DB9' // Crosstour CR900
 ];
 
 /**
@@ -77,23 +86,45 @@ function scrapeAmazonUrl(url, source = 'product') {
 
       res.on('end', () => {
         try {
+          // Check if data is empty
+          if (!data || data.trim() === '') {
+            console.error(`Empty response from Oxylabs API for URL: ${url}`);
+            reject(new Error(`Empty response from Oxylabs API for URL: ${url}`));
+            return;
+          }
+          
           const parsedData = JSON.parse(data);
           if (res.statusCode !== 200) {
             console.error(`Error from Oxylabs API: ${JSON.stringify(parsedData)}`);
             reject(new Error(`Oxylabs API returned status code ${res.statusCode}`));
             return;
           }
+          
+          // Check if the response contains results
+          if (!parsedData.results || !Array.isArray(parsedData.results) || parsedData.results.length === 0) {
+            console.error(`No results found in Oxylabs API response for URL: ${url}`);
+            reject(new Error(`No results found in Oxylabs API response for URL: ${url}`));
+            return;
+          }
+          
           resolve(parsedData);
         } catch (error) {
-          console.error('Error parsing Oxylabs API response:', error);
+          console.error(`Error parsing Oxylabs API response for URL ${url}:`, error);
           reject(error);
         }
       });
     });
 
     req.on('error', (error) => {
-      console.error('Error making request to Oxylabs API:', error);
+      console.error(`Error making request to Oxylabs API for URL ${url}:`, error);
       reject(error);
+    });
+
+    // Set a timeout for the request (30 seconds)
+    req.setTimeout(30000, () => {
+      req.destroy();
+      console.error(`Request timeout for URL: ${url}`);
+      reject(new Error(`Request timeout for URL: ${url}`));
     });
 
     req.write(payload);
@@ -220,6 +251,17 @@ function extractProductDetails(productData, marketplace) {
     // Log product structure for debugging
     console.log('Product Structure:', JSON.stringify(Object.keys(product), null, 2));
     
+    // Check if this is a "Page Not Found" or similar error page
+    if (product.title && (
+        product.title.includes('Page Not Found') || 
+        product.title.includes('Error') || 
+        product.title.includes('not available') ||
+        product.title.includes('not exist')
+    )) {
+      console.error('Product page appears to be an error page:', product.title);
+      return null;
+    }
+    
     // Extract brand and model from title
     let brand = '';
     let model = '';
@@ -236,6 +278,34 @@ function extractProductDetails(productData, marketplace) {
     // Extract title
     const title = product.title || product.name || '';
     
+    if (!title) {
+      console.error('No title found for product');
+      return null;
+    }
+    
+    // If brand is still empty, try to extract it from the title
+    if (!brand) {
+      // Common dash cam brands
+      const dashCamBrands = ['Nextbase', 'Garmin', 'REDTIGER', 'ROVE', 'Thinkware', 'BlackVue', 
+                            'Vantrue', 'APEMAN', 'AUKEY', 'CHORTAU', '70mai', 'Kingslim', 'Crosstour', 
+                            'REXING', 'Anker', 'Pioneer', 'VIOFO', 'YI', 'Cobra', 'DDPai'];
+      
+      for (const knownBrand of dashCamBrands) {
+        if (title.includes(knownBrand)) {
+          brand = knownBrand;
+          break;
+        }
+      }
+      
+      // If still no brand, use the first word of the title
+      if (!brand) {
+        const titleParts = title.split(' ');
+        if (titleParts.length > 0) {
+          brand = titleParts[0];
+        }
+      }
+    }
+    
     if (title) {
       // Try to extract model from title if brand is known
       if (brand) {
@@ -250,6 +320,11 @@ function extractProductDetails(productData, marketplace) {
           model = titleParts.slice(1, Math.min(4, titleParts.length)).join(' ');
         }
       }
+    }
+    
+    // If model is still empty, use a portion of the title
+    if (!model && title) {
+      model = title.substring(0, Math.min(50, title.length));
     }
 
     // Extract features/specifications
@@ -296,6 +371,8 @@ function extractProductDetails(productData, marketplace) {
       price = parseFloat(product.current_price);
     } else if (product.price_info && product.price_info.current_price) {
       price = parseFloat(product.price_info.current_price);
+    } else if (product.price_buybox) {
+      price = parseFloat(product.price_buybox);
     }
 
     // Extract image URL
@@ -305,7 +382,13 @@ function extractProductDetails(productData, marketplace) {
     if (product.main_image && typeof product.main_image === 'string') {
       imageUrl = product.main_image;
     } else if (product.images && product.images.length > 0) {
-      imageUrl = product.images[0].url || product.images[0];
+      if (typeof product.images[0] === 'string') {
+        imageUrl = product.images[0];
+      } else if (product.images[0].url) {
+        imageUrl = product.images[0].url;
+      } else if (product.images[0].link) {
+        imageUrl = product.images[0].link;
+      }
     } else if (product.image && typeof product.image === 'string') {
       imageUrl = product.image;
     } else if (product.image_url) {
@@ -314,6 +397,11 @@ function extractProductDetails(productData, marketplace) {
       imageUrl = product.image_urls[0];
     } else if (product.primary_image) {
       imageUrl = product.primary_image;
+    }
+    
+    // If no image URL was found, use a placeholder
+    if (!imageUrl) {
+      imageUrl = 'https://via.placeholder.com/300x300?text=No+Image+Available';
     }
 
     // Extract rating
@@ -384,6 +472,11 @@ function extractProductDetails(productData, marketplace) {
 
     // Extract URL
     let url = product.url || product.link || results.url || '';
+    
+    // If URL is empty, use the original URL from the request
+    if (!url) {
+      url = results.url || '';
+    }
 
     // Generate a unique ID
     const id = generateProductId(product.asin || '', brand, model);
@@ -515,24 +608,46 @@ async function scrapeSearchResults() {
 async function scrapeProductUrls(urls) {
   const products = [];
   
-  // Add any manually specified product URLs
-  urls = [...new Set([...urls, ...PRODUCT_URLS])];
+  // Remove duplicates from the input URLs and PRODUCT_URLS
+  const uniqueUrls = [...new Set([...urls, ...PRODUCT_URLS])];
   
-  // Scrape each product URL
-  for (const url of urls) {
+  // Scrape each product URL with a delay between requests to avoid rate limiting
+  for (const url of uniqueUrls) {
     try {
       console.log(`Scraping product data from: ${url}`);
       const marketplace = url.includes('amazon.co.uk') ? 'amazon_uk' : 'amazon_com';
+      
+      // Add a small delay between requests to avoid rate limiting
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
       const productData = await scrapeAmazonUrl(url);
       const product = extractProductDetails(productData, marketplace);
       
       if (product) {
-        products.push(product);
-        console.log(`Successfully scraped product: ${product.brand} ${product.model}`);
+        // Validate the product data before adding it
+        if (product.brand && product.brand !== 'Page' && 
+            product.model && product.model !== 'Not Found' && 
+            product.image && !product.image.includes('Error parsing')) {
+          
+          // Additional validation for model and brand
+          if (product.model.length > 5 && product.brand.length > 1) {
+            products.push(product);
+            console.log(`Successfully scraped product: ${product.brand} ${product.model}`);
+          } else {
+            console.error(`Invalid product data (short brand/model) for URL ${url}:`, JSON.stringify(product));
+          }
+        } else {
+          console.error(`Invalid product data for URL ${url}:`, JSON.stringify(product));
+        }
       }
     } catch (error) {
       console.error(`Error scraping product data from ${url}:`, error);
     }
+  }
+  
+  // If no valid products were scraped, throw an error
+  if (products.length === 0) {
+    console.error('No valid products were scraped. Check the product URLs and API credentials.');
   }
   
   return products;

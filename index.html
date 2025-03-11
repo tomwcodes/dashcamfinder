@@ -97,11 +97,54 @@
                     </div>
                     
                     <div class="filter-group">
-                        <label for="resolution-select">Resolution</label>
-                        <select id="resolution-select">
-                            <option value="">All Resolutions</option>
-                            <!-- Populated by JavaScript -->
-                        </select>
+                        <label>Specifications</label>
+                        <div class="multi-select-dropdown">
+                            <div class="dropdown-trigger">Select Specifications <i class="fas fa-chevron-down"></i></div>
+                            <div class="dropdown-content">
+                                <!-- Video specs group -->
+                                <div class="spec-group">
+                                    <h4>Video</h4>
+                                    <div class="checkbox-list">
+                                        <label class="checkbox-option"><input type="checkbox" name="specs" value="resolution:4K"> 4K Resolution</label>
+                                        <label class="checkbox-option"><input type="checkbox" name="specs" value="resolution:1440p"> 1440p Resolution</label>
+                                        <label class="checkbox-option"><input type="checkbox" name="specs" value="resolution:1080p"> 1080p Resolution</label>
+                                        <label class="checkbox-option"><input type="checkbox" name="specs" value="video:hdr"> HDR</label>
+                                        <label class="checkbox-option"><input type="checkbox" name="specs" value="video:wdr"> WDR</label>
+                                        <label class="checkbox-option"><input type="checkbox" name="specs" value="video:nightVision"> Night Vision</label>
+                                    </div>
+                                </div>
+                                <!-- Physical specs group -->
+                                <div class="spec-group">
+                                    <h4>Physical</h4>
+                                    <div class="checkbox-list">
+                                        <label class="checkbox-option"><input type="checkbox" name="specs" value="physical:fov:140"> 140°+ FOV</label>
+                                        <label class="checkbox-option"><input type="checkbox" name="specs" value="physical:fov:160"> 160°+ FOV</label>
+                                        <label class="checkbox-option"><input type="checkbox" name="specs" value="physical:channels:2"> Dual Channel</label>
+                                    </div>
+                                </div>
+                                <!-- Connectivity specs group -->
+                                <div class="spec-group">
+                                    <h4>Connectivity</h4>
+                                    <div class="checkbox-list">
+                                        <label class="checkbox-option"><input type="checkbox" name="specs" value="connectivity:wifi"> WiFi</label>
+                                        <label class="checkbox-option"><input type="checkbox" name="specs" value="connectivity:bluetooth"> Bluetooth</label>
+                                        <label class="checkbox-option"><input type="checkbox" name="specs" value="connectivity:gps"> GPS</label>
+                                        <label class="checkbox-option"><input type="checkbox" name="specs" value="connectivity:voiceControl"> Voice Control</label>
+                                    </div>
+                                </div>
+                                <!-- Features specs group -->
+                                <div class="spec-group">
+                                    <h4>Features</h4>
+                                    <div class="checkbox-list">
+                                        <label class="checkbox-option"><input type="checkbox" name="specs" value="features:parkingMode"> Parking Mode</label>
+                                        <label class="checkbox-option"><input type="checkbox" name="specs" value="features:motionDetection"> Motion Detection</label>
+                                        <label class="checkbox-option"><input type="checkbox" name="specs" value="features:loopRecording"> Loop Recording</label>
+                                        <label class="checkbox-option"><input type="checkbox" name="specs" value="features:emergencyRecording"> Emergency Recording</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="selected-filters" id="selected-specs"></div>
                     </div>
                 </div>
                 
