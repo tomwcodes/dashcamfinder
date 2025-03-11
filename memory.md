@@ -18,6 +18,7 @@ The project has a functional implementation with the following features:
 - Fallback to localStorage cache if JSON file can't be loaded
 - Clean product data with only products from PRODUCT_URLS in amazon-scraper.js
 - Reset script to repopulate product data from specific product URLs
+- Recently reset and refreshed product data to ensure up-to-date information
 - Improved Oxylabs API response parsing with robust property access paths and fallback mechanisms
 - Marketplace-specific product filtering to ensure products only appear in their respective marketplace sections
 

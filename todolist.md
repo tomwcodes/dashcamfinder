@@ -14,6 +14,7 @@
 - [x] Fix issue with amazon.com products appearing in amazon.co.uk section
 - [x] Add brand and resolution columns to search results table
 - [x] Change rating stars display from vertical to horizontal layout
+- [x] Reset and refresh product data
 
 ## Pending Tasks
 - [ ] Add dark mode toggle functionality

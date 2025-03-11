@@ -235,7 +235,7 @@ const renderProductsTable = (products, marketplace) => {
           <th>Price</th>
           <th>Rating</th>
           <th>Features</th>
-          <th>Action</th>
+          <th>Link</th>
         </tr>
       </thead>
       <tbody>
