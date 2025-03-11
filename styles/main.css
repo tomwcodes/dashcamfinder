@@ -339,6 +339,18 @@ button.outline:hover, .button.outline:hover {
   color: white;
 }
 
+button.disabled, .button.disabled {
+  background-color: var(--neutral-400);
+  color: var(--neutral-600);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+button.disabled:hover, .button.disabled:hover {
+  background-color: var(--neutral-400);
+  transform: none;
+}
+
 /* Layout */
 .container {
   width: 100%;

@@ -32,3 +32,4 @@
 - [ ] Implement lazy loading for product images
 - [ ] Create a contact form
 - [ ] Further improve feature extraction for products with missing features
+- [x] Detect unavailable products (price = -1) and allow users to select only available models

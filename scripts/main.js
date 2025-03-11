@@ -117,6 +117,12 @@ const filterProducts = (filters) => {
       return false;
     }
     
+    // Filter out unavailable products (price = -1)
+    const productPrice = filters.marketplace === 'amazon_uk' ? product.price.amazon_uk : product.price.amazon_com;
+    if (productPrice === -1) {
+      return false;
+    }
+    
     // Filter by brand if selected
     if (filters.brand && product.brand !== filters.brand) {
       return false;
@@ -225,8 +231,8 @@ const sortProducts = (products, sortBy, marketplace) => {
 
 // Format price with currency symbol
 const formatPrice = (price, marketplace) => {
-  if (!price || price === 0) {
-    return 'Price not available';
+  if (!price || price === 0 || price === -1) {
+    return 'Currently unavailable';
   }
   
   if (marketplace === 'amazon_uk') {
@@ -508,7 +514,10 @@ const renderProductsGrid = (products, marketplace) => {
             ${specSections.join('')}
           </div>
           <div class="product-card-actions">
-            <a href="${amazonUrl}" target="_blank" class="button buy-button">View on Amazon</a>
+            ${price === -1 ? 
+              `<button class="button buy-button disabled" disabled>Currently Unavailable</button>` : 
+              `<a href="${amazonUrl}" target="_blank" class="button buy-button">View on Amazon</a>`
+            }
           </div>
         </div>
       </div>

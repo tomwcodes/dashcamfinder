@@ -22,6 +22,8 @@ The project has a functional implementation with the following features:
 - Recently reset and refreshed product data to ensure up-to-date information
 - Improved Oxylabs API response parsing with robust property access paths and fallback mechanisms
 - Marketplace-specific product filtering to ensure products only appear in their respective marketplace sections
+- Unavailable product detection (products with price = -1) with filtering to show only available products
+- Disabled "View on Amazon" buttons for unavailable products with clear visual indication
 
 ## Project Structure
 ```
