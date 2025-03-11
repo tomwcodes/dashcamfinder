@@ -3,6 +3,9 @@
  * Handles filtering, sorting, and display of dash cam products
  */
 
+// Import the product processor
+import { processProductsArray } from './product-processor.js';
+
 // Default product data (used as fallback if JSON file can't be loaded)
 let dashCamProducts = [];
 
@@ -25,8 +28,11 @@ async function fetchProductData() {
     // Parse the JSON response
     const data = await response.json();
     
-    console.log(`Loaded ${data.length} products from JSON file`);
-    return data;
+    // Process the raw data to extract structured specifications
+    const processedData = processProductsArray(data);
+    
+    console.log(`Loaded and processed ${processedData.length} products from JSON file`);
+    return processedData;
   } catch (error) {
     console.error('Error loading product data:', error);
     
@@ -231,10 +237,9 @@ const renderProductsTable = (products, marketplace) => {
         <tr>
           <th>Brand</th>
           <th>Product</th>
-          <th>Resolution</th>
+          <th>Specs</th>
           <th>Price</th>
           <th>Rating</th>
-          <th>Features</th>
           <th>Link</th>
         </tr>
       </thead>
@@ -244,10 +249,83 @@ const renderProductsTable = (products, marketplace) => {
   products.forEach(product => {
     const price = marketplace === 'amazon_uk' ? product.price.amazon_uk : product.price.amazon_com;
     const amazonUrl = marketplace === 'amazon_uk' ? product.amazonUrl.uk : product.amazonUrl.com;
-    // Default image if none is provided
-    const imageUrl = product.image && product.image.trim() !== '' ? 
-      product.image : 
-      `https://via.placeholder.com/150x100/f0f0f0/333333?text=${encodeURIComponent(product.brand)}`;
+    
+    // Get specs from processed data
+    const specs = product.specs || {};
+    const videoSpecs = specs.video || {};
+    const physicalSpecs = specs.physical || {};
+    const connectivitySpecs = specs.connectivity || {};
+    const featureSpecs = specs.features || {};
+    
+    // Create badges for key features
+    const badges = [];
+    
+    // Resolution badge
+    if (videoSpecs.resolution) {
+      badges.push(`<span class="spec-badge resolution">${videoSpecs.resolution}</span>`);
+    }
+    
+    // FOV badge
+    if (physicalSpecs.fov) {
+      badges.push(`<span class="spec-badge fov">${physicalSpecs.fov}° FOV</span>`);
+    }
+    
+    // WiFi badge
+    if (connectivitySpecs.wifi) {
+      badges.push(`<span class="spec-badge wifi">WiFi</span>`);
+    }
+    
+    // GPS badge
+    if (connectivitySpecs.gps) {
+      badges.push(`<span class="spec-badge gps">GPS</span>`);
+    }
+    
+    // Night Vision badge
+    if (videoSpecs.nightVision) {
+      badges.push(`<span class="spec-badge night-vision">Night Vision</span>`);
+    }
+    
+    // Parking Mode badge
+    if (featureSpecs.parkingMode) {
+      badges.push(`<span class="spec-badge parking">Parking Mode</span>`);
+    }
+    
+    // Create key specs list
+    const specsList = [];
+    
+    // Add resolution with fps if available
+    if (videoSpecs.resolution) {
+      let resText = videoSpecs.resolution;
+      if (videoSpecs.fps) {
+        resText += ` @ ${videoSpecs.fps}fps`;
+      }
+      specsList.push(resText);
+    }
+    
+    // Add screen size if available
+    if (physicalSpecs.screenSize) {
+      let screenText = `${physicalSpecs.screenSize}" Screen`;
+      if (physicalSpecs.screenType) {
+        screenText += ` (${physicalSpecs.screenType})`;
+      }
+      specsList.push(screenText);
+    }
+    
+    // Add channels if more than 1
+    if (physicalSpecs.channels && physicalSpecs.channels > 1) {
+      specsList.push(`${physicalSpecs.channels}-Channel`);
+    }
+    
+    // Add WiFi frequency if available
+    if (connectivitySpecs.wifi && connectivitySpecs.wifiFrequency) {
+      specsList.push(`${connectivitySpecs.wifiFrequency} WiFi`);
+    }
+    
+    // Use clean model name if available
+    const modelName = product.cleanModelName || product.model;
+    
+    // Check if product is new (released within last 30 days)
+    const isNew = product.releaseDate && (new Date() - new Date(product.releaseDate)) < 30 * 24 * 60 * 60 * 1000;
     
     tableHtml += `
       <tr>
@@ -255,10 +333,20 @@ const renderProductsTable = (products, marketplace) => {
           <div class="product-brand">${product.brand}</div>
         </td>
         <td>
-          <div class="product-title">${product.model}</div>
+          <div class="product-title">
+            ${modelName}
+            ${isNew ? '<span class="new-badge">NEW!</span>' : ''}
+          </div>
         </td>
         <td>
-          <div class="product-resolution">${product.resolution}</div>
+          <div class="product-specs">
+            <div class="spec-badges">
+              ${badges.join('')}
+            </div>
+            <div class="spec-details">
+              ${specsList.length > 0 ? specsList.join(' • ') : 'Specifications not available'}
+            </div>
+          </div>
         </td>
         <td>
           <div class="product-price">${formatPrice(price, marketplace)}</div>
@@ -268,13 +356,6 @@ const renderProductsTable = (products, marketplace) => {
             <div class="rating-number">${product.rating}</div>
             <div class="stars">${generateStarRating(product.rating)}</div>
             <div class="review-count">${product.reviewCount > 0 ? product.reviewCount.toLocaleString() + ' ratings' : 'No reviews yet'}</div>
-          </div>
-        </td>
-        <td>
-          <div class="product-features">
-            <ul>
-              ${product.features.slice(0, 3).map(feature => `<li>${feature}</li>`).join('')}
-            </ul>
           </div>
         </td>
         <td>
@@ -315,26 +396,228 @@ const renderProductsGrid = (products, marketplace) => {
       product.image : 
       `https://via.placeholder.com/300x200/f0f0f0/333333?text=${encodeURIComponent(product.brand)}`;
     
+    // Get specs from processed data
+    const specs = product.specs || {};
+    const videoSpecs = specs.video || {};
+    const physicalSpecs = specs.physical || {};
+    const connectivitySpecs = specs.connectivity || {};
+    const featureSpecs = specs.features || {};
+    const storageSpecs = specs.storage || {};
+    
+    // Create badges for key features
+    const badges = [];
+    
+    // Resolution badge
+    if (videoSpecs.resolution) {
+      badges.push(`<span class="spec-badge resolution">${videoSpecs.resolution}</span>`);
+    }
+    
+    // FOV badge
+    if (physicalSpecs.fov) {
+      badges.push(`<span class="spec-badge fov">${physicalSpecs.fov}° FOV</span>`);
+    }
+    
+    // WiFi badge
+    if (connectivitySpecs.wifi) {
+      badges.push(`<span class="spec-badge wifi">WiFi</span>`);
+    }
+    
+    // GPS badge
+    if (connectivitySpecs.gps) {
+      badges.push(`<span class="spec-badge gps">GPS</span>`);
+    }
+    
+    // Night Vision badge
+    if (videoSpecs.nightVision) {
+      badges.push(`<span class="spec-badge night-vision">Night Vision</span>`);
+    }
+    
+    // Parking Mode badge
+    if (featureSpecs.parkingMode) {
+      badges.push(`<span class="spec-badge parking">Parking Mode</span>`);
+    }
+    
+    // Create specs sections
+    const specSections = [];
+    
+    // Video specs section
+    const videoSpecsList = [];
+    if (videoSpecs.resolution) {
+      let resText = videoSpecs.resolution;
+      if (videoSpecs.fps) {
+        resText += ` @ ${videoSpecs.fps}fps`;
+      }
+      videoSpecsList.push(resText);
+    }
+    if (videoSpecs.hdr) {
+      videoSpecsList.push('HDR');
+    }
+    if (videoSpecs.wdr) {
+      videoSpecsList.push('WDR');
+    }
+    if (videoSpecs.nightVision) {
+      videoSpecsList.push('Night Vision');
+    }
+    
+    if (videoSpecsList.length > 0) {
+      specSections.push(`
+        <div class="spec-section">
+          <h4>Video</h4>
+          <ul>
+            ${videoSpecsList.map(spec => `<li>${spec}</li>`).join('')}
+          </ul>
+        </div>
+      `);
+    }
+    
+    // Physical specs section
+    const physicalSpecsList = [];
+    if (physicalSpecs.fov) {
+      physicalSpecsList.push(`${physicalSpecs.fov}° Field of View`);
+    }
+    if (physicalSpecs.screenSize) {
+      let screenText = `${physicalSpecs.screenSize}" Screen`;
+      if (physicalSpecs.screenType) {
+        screenText += ` (${physicalSpecs.screenType})`;
+      }
+      physicalSpecsList.push(screenText);
+    }
+    if (physicalSpecs.channels && physicalSpecs.channels > 1) {
+      physicalSpecsList.push(`${physicalSpecs.channels}-Channel Recording`);
+    }
+    if (physicalSpecs.sizeDescription) {
+      physicalSpecsList.push(physicalSpecs.sizeDescription);
+    }
+    
+    if (physicalSpecsList.length > 0) {
+      specSections.push(`
+        <div class="spec-section">
+          <h4>Physical</h4>
+          <ul>
+            ${physicalSpecsList.map(spec => `<li>${spec}</li>`).join('')}
+          </ul>
+        </div>
+      `);
+    }
+    
+    // Connectivity specs section
+    const connectivitySpecsList = [];
+    if (connectivitySpecs.wifi) {
+      let wifiText = 'WiFi';
+      if (connectivitySpecs.wifiFrequency) {
+        wifiText += ` (${connectivitySpecs.wifiFrequency})`;
+      }
+      connectivitySpecsList.push(wifiText);
+    }
+    if (connectivitySpecs.bluetooth) {
+      connectivitySpecsList.push('Bluetooth');
+    }
+    if (connectivitySpecs.gps) {
+      connectivitySpecsList.push('GPS');
+    }
+    if (connectivitySpecs.voiceControl) {
+      connectivitySpecsList.push('Voice Control');
+    }
+    
+    if (connectivitySpecsList.length > 0) {
+      specSections.push(`
+        <div class="spec-section">
+          <h4>Connectivity</h4>
+          <ul>
+            ${connectivitySpecsList.map(spec => `<li>${spec}</li>`).join('')}
+          </ul>
+        </div>
+      `);
+    }
+    
+    // Features specs section
+    const featureSpecsList = [];
+    if (featureSpecs.parkingMode) {
+      featureSpecsList.push('Parking Mode');
+    }
+    if (featureSpecs.motionDetection) {
+      featureSpecsList.push('Motion Detection');
+    }
+    if (featureSpecs.loopRecording) {
+      featureSpecsList.push('Loop Recording');
+    }
+    if (featureSpecs.emergencyRecording) {
+      featureSpecsList.push('Emergency Recording');
+    }
+    if (featureSpecs.timeLapse) {
+      featureSpecsList.push('Time-Lapse');
+    }
+    if (featureSpecs.remoteMonitoring) {
+      featureSpecsList.push('Remote Monitoring');
+    }
+    
+    if (featureSpecsList.length > 0) {
+      specSections.push(`
+        <div class="spec-section">
+          <h4>Features</h4>
+          <ul>
+            ${featureSpecsList.map(spec => `<li>${spec}</li>`).join('')}
+          </ul>
+        </div>
+      `);
+    }
+    
+    // Storage specs section
+    const storageSpecsList = [];
+    if (storageSpecs.memoryCardIncluded) {
+      let storageText = 'Memory Card Included';
+      if (storageSpecs.includedStorage) {
+        storageText = `${storageSpecs.includedStorage}GB Memory Card Included`;
+      }
+      storageSpecsList.push(storageText);
+    }
+    if (storageSpecs.maxStorage) {
+      storageSpecsList.push(`Supports up to ${storageSpecs.maxStorage}GB`);
+    }
+    
+    if (storageSpecsList.length > 0) {
+      specSections.push(`
+        <div class="spec-section">
+          <h4>Storage</h4>
+          <ul>
+            ${storageSpecsList.map(spec => `<li>${spec}</li>`).join('')}
+          </ul>
+        </div>
+      `);
+    }
+    
+    // Use clean model name if available
+    const modelName = product.cleanModelName || product.model;
+    
+    // Check if product is new (released within last 30 days)
+    const isNew = product.releaseDate && (new Date() - new Date(product.releaseDate)) < 30 * 24 * 60 * 60 * 1000;
+    
+    // Format release date
+    const releaseDate = product.releaseDate ? new Date(product.releaseDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : null;
+    
     gridHtml += `
       <div class="product-card">
         <div class="product-card-image">
           <img src="${imageUrl}" alt="${product.brand} ${product.model}">
+          ${badges.length > 0 ? `<div class="product-card-badges">${badges.join('')}</div>` : ''}
+          ${isNew ? '<span class="new-badge">NEW!</span>' : ''}
         </div>
         <div class="product-card-content">
-          <h3 class="product-card-title">${product.brand} ${product.model}</h3>
+          <h3 class="product-card-title">${product.brand} ${modelName}</h3>
           <div class="product-card-price">${formatPrice(price, marketplace)}</div>
           <div class="product-card-rating">
             <div class="rating-number">${product.rating}</div>
             <div class="stars">${generateStarRating(product.rating)}</div>
             <div class="review-count">${product.reviewCount > 0 ? product.reviewCount.toLocaleString() + ' ratings' : 'No reviews yet'}</div>
           </div>
-          <div class="product-card-features">
-            <ul>
-              ${product.features.slice(0, 3).map(feature => `<li>${feature}</li>`).join('')}
-            </ul>
+          ${releaseDate ? `<div class="product-card-release-date">Released: ${releaseDate}</div>` : ''}
+          <div class="product-card-specs-toggle">
+            <button class="specs-toggle-button">Show Specifications</button>
+          </div>
+          <div class="product-card-specs">
+            ${specSections.join('')}
           </div>
           <div class="product-card-actions">
-            <span class="text-muted">${product.resolution}</span>
             <a href="${amazonUrl}" target="_blank" class="button buy-button">View on Amazon</a>
           </div>
         </div>
@@ -345,6 +628,17 @@ const renderProductsGrid = (products, marketplace) => {
   gridHtml += '</div>';
   
   resultsContainer.innerHTML = gridHtml;
+  
+  // Add event listeners for specs toggle buttons
+  document.querySelectorAll('.specs-toggle-button').forEach(button => {
+    button.addEventListener('click', function() {
+      const specsContainer = this.parentElement.nextElementSibling;
+      const isVisible = specsContainer.style.display === 'block';
+      
+      specsContainer.style.display = isVisible ? 'none' : 'block';
+      this.textContent = isVisible ? 'Show Specifications' : 'Hide Specifications';
+    });
+  });
 };
 
 // Update results count

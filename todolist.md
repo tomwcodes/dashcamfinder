@@ -30,3 +30,4 @@
 - [ ] Implement lazy loading for product images
 - [ ] Create a contact form
 - [ ] Further improve feature extraction for products with missing features
+- [x] Remove features and resolution columns from results data
