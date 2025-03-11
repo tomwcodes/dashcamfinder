@@ -218,157 +218,7 @@ const generateStarRating = (rating) => {
   return starsHtml;
 };
 
-// Render products in table view
-const renderProductsTable = (products, marketplace) => {
-  const resultsContainer = document.getElementById('results-container');
-  
-  if (products.length === 0) {
-    resultsContainer.innerHTML = `
-      <div class="no-results">
-        <p>No dash cams match your selected filters. Try adjusting your criteria.</p>
-      </div>
-    `;
-    return;
-  }
-  
-  let tableHtml = `
-    <table class="results-table">
-      <thead>
-        <tr>
-          <th>Brand</th>
-          <th>Product</th>
-          <th>Specs</th>
-          <th>Price</th>
-          <th>Rating</th>
-          <th>Link</th>
-        </tr>
-      </thead>
-      <tbody>
-  `;
-  
-  products.forEach(product => {
-    const price = marketplace === 'amazon_uk' ? product.price.amazon_uk : product.price.amazon_com;
-    const amazonUrl = marketplace === 'amazon_uk' ? product.amazonUrl.uk : product.amazonUrl.com;
-    
-    // Get specs from processed data
-    const specs = product.specs || {};
-    const videoSpecs = specs.video || {};
-    const physicalSpecs = specs.physical || {};
-    const connectivitySpecs = specs.connectivity || {};
-    const featureSpecs = specs.features || {};
-    
-    // Create badges for key features
-    const badges = [];
-    
-    // Resolution badge
-    if (videoSpecs.resolution) {
-      badges.push(`<span class="spec-badge resolution">${videoSpecs.resolution}</span>`);
-    }
-    
-    // FOV badge
-    if (physicalSpecs.fov) {
-      badges.push(`<span class="spec-badge fov">${physicalSpecs.fov}° FOV</span>`);
-    }
-    
-    // WiFi badge
-    if (connectivitySpecs.wifi) {
-      badges.push(`<span class="spec-badge wifi">WiFi</span>`);
-    }
-    
-    // GPS badge
-    if (connectivitySpecs.gps) {
-      badges.push(`<span class="spec-badge gps">GPS</span>`);
-    }
-    
-    // Night Vision badge
-    if (videoSpecs.nightVision) {
-      badges.push(`<span class="spec-badge night-vision">Night Vision</span>`);
-    }
-    
-    // Parking Mode badge
-    if (featureSpecs.parkingMode) {
-      badges.push(`<span class="spec-badge parking">Parking Mode</span>`);
-    }
-    
-  // Create key specs list
-  const specsList = [];
-  
-  // We don't need to add resolution text here since it's already shown as a badge
-  // Add fps if available
-  if (videoSpecs.resolution && videoSpecs.fps) {
-    specsList.push(`${videoSpecs.fps}fps`);
-  }
-    
-    // Add screen size if available
-    if (physicalSpecs.screenSize) {
-      let screenText = `${physicalSpecs.screenSize}" Screen`;
-      if (physicalSpecs.screenType) {
-        screenText += ` (${physicalSpecs.screenType})`;
-      }
-      specsList.push(screenText);
-    }
-    
-    // Add channels if more than 1
-    if (physicalSpecs.channels && physicalSpecs.channels > 1) {
-      specsList.push(`${physicalSpecs.channels}-Channel`);
-    }
-    
-    // Add WiFi frequency if available
-    if (connectivitySpecs.wifi && connectivitySpecs.wifiFrequency) {
-      specsList.push(`${connectivitySpecs.wifiFrequency} WiFi`);
-    }
-    
-    // Use clean model name if available
-    const modelName = product.cleanModelName || product.model;
-    
-    // Check if product is new (released within last 30 days)
-    const isNew = product.releaseDate && (new Date() - new Date(product.releaseDate)) < 30 * 24 * 60 * 60 * 1000;
-    
-    tableHtml += `
-      <tr>
-        <td>
-          <div class="product-brand">${product.brand}</div>
-        </td>
-        <td>
-          <div class="product-title">
-            ${modelName}
-            ${isNew ? '<span class="new-badge">NEW!</span>' : ''}
-          </div>
-        </td>
-        <td>
-          <div class="product-specs">
-            <div class="spec-badges">
-              ${badges.join('')}
-            </div>
-            <div class="spec-details">
-              ${specsList.length > 0 ? specsList.join(' • ') : ''}
-            </div>
-          </div>
-        </td>
-        <td>
-          <div class="product-price">${formatPrice(price, marketplace)}</div>
-        </td>
-        <td>
-          <div class="product-rating">
-            <div class="rating-number">${product.rating}</div>
-            <div class="stars">${generateStarRating(product.rating)}</div>
-            <div class="review-count">${product.reviewCount > 0 ? product.reviewCount.toLocaleString() + ' ratings' : 'No reviews yet'}</div>
-          </div>
-        </td>
-        <td>
-          <a href="${amazonUrl}" target="_blank" class="button buy-button">View on Amazon</a>
-        </td>
-      </tr>
-    `;
-  });
-  
-  tableHtml += `
-      </tbody>
-    </table>
-  `;
-  
-  resultsContainer.innerHTML = tableHtml;
-};
+// Table view rendering function removed - using only grid view
 
 // Render products in grid view
 const renderProductsGrid = (products, marketplace) => {
@@ -745,7 +595,7 @@ const initPage = () => {
   const maxPriceInput = document.getElementById('max-price');
   const minRatingSelect = document.getElementById('min-rating');
   const sortSelect = document.getElementById('sort-select');
-  const viewModeButtons = document.querySelectorAll('.view-mode-button');
+  // View mode buttons removed - using only grid view
   const resetFiltersButton = document.getElementById('reset-filters');
   
   // Get URL parameters
@@ -777,14 +627,7 @@ const initPage = () => {
   minRatingSelect.value = params.minRating;
   sortSelect.value = params.sortBy;
   
-  // Set active view mode
-  viewModeButtons.forEach(button => {
-    if (button.dataset.view === params.viewMode) {
-      button.classList.add('active');
-    } else {
-      button.classList.remove('active');
-    }
-  });
+  // View mode setting removed - using only grid view
   
   // Apply initial filters and render products
   applyFilters();
@@ -802,20 +645,7 @@ const initPage = () => {
   minRatingSelect.addEventListener('change', applyFilters);
   sortSelect.addEventListener('change', applyFilters);
   
-  viewModeButtons.forEach(button => {
-    button.addEventListener('click', (e) => {
-      e.preventDefault();
-      
-      // Remove active class from all buttons
-      viewModeButtons.forEach(btn => btn.classList.remove('active'));
-      
-      // Add active class to clicked button
-      button.classList.add('active');
-      
-      // Apply filters with new view mode
-      applyFilters();
-    });
-  });
+  // View mode button event listeners removed - using only grid view
   
   resetFiltersButton.addEventListener('click', (e) => {
     e.preventDefault();
@@ -847,8 +677,8 @@ const applyFilters = () => {
   const minRating = document.getElementById('min-rating').value ? parseFloat(document.getElementById('min-rating').value) : '';
   const sortBy = document.getElementById('sort-select').value;
   
-  // Get active view mode
-  const viewMode = document.querySelector('.view-mode-button.active').dataset.view;
+  // View mode handling removed - using only grid view
+  const viewMode = 'grid'; // Always use grid view
   
   // Create filters object
   const filters = {
@@ -868,12 +698,8 @@ const applyFilters = () => {
   // Update results count
   updateResultsCount(sortedProducts.length);
   
-  // Render products based on view mode
-  if (viewMode === 'table') {
-    renderProductsTable(sortedProducts, marketplace);
-  } else {
-    renderProductsGrid(sortedProducts, marketplace);
-  }
+  // Always render products in grid view
+  renderProductsGrid(sortedProducts, marketplace);
   
   // Update URL parameters
   updateUrlParams(filters, sortBy, viewMode);

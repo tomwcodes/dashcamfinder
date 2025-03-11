@@ -15,6 +15,9 @@
 - [x] Add brand and resolution columns to search results table
 - [x] Change rating stars display from vertical to horizontal layout
 - [x] Reset and refresh product data
+- [x] Remove list view and keep only grid view for better mobile display
+- [x] Remove features and resolution columns from results data
+- [x] Fix duplicate resolution text in list view specs column
 
 ## Pending Tasks
 - [ ] Add dark mode toggle functionality
@@ -25,10 +28,7 @@
 - [ ] Implement user reviews section
 - [ ] Create a privacy policy page
 - [ ] Add analytics tracking
-- [x] Remove image from list view and only include in tab view
 - [ ] Optimize images for faster loading
 - [ ] Implement lazy loading for product images
 - [ ] Create a contact form
 - [ ] Further improve feature extraction for products with missing features
-- [x] Remove features and resolution columns from results data
-- [x] Fix duplicate resolution text in list view specs column
