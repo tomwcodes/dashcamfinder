@@ -3,8 +3,9 @@
  * Handles filtering, sorting, and display of dash cam products
  */
 
-// Import the product processor
+// Import the product processor and filter system
 import { processProductsArray } from './product-processor.js';
+import { applyFilters, getFilterState } from './filter-system.js';
 
 // Default product data (used as fallback if JSON file can't be loaded)
 let dashCamProducts = [];
@@ -106,91 +107,23 @@ const getSpecifications = () => {
   };
 };
 
-// Filter products based on selected criteria
+// Filter products based on selected criteria - using the new filter system
 const filterProducts = (filters) => {
-  return dashCamProducts.filter(product => {
-    // Filter by marketplace - only show products that have prices for the selected marketplace
-    if (filters.marketplace === 'amazon_uk' && (!product.price.amazon_uk || !product.amazonUrl.uk)) {
-      return false;
-    }
-    if (filters.marketplace === 'amazon_com' && (!product.price.amazon_com || !product.amazonUrl.com)) {
-      return false;
-    }
-    
-    // Filter out unavailable products (price = -1)
-    const productPrice = filters.marketplace === 'amazon_uk' ? product.price.amazon_uk : product.price.amazon_com;
-    if (productPrice === -1) {
-      return false;
-    }
-    
-    // Filter by brand if selected
-    if (filters.brand && product.brand !== filters.brand) {
-      return false;
-    }
-    
-    // Filter by model if search text is provided
-    if (filters.searchText && !product.model.toLowerCase().includes(filters.searchText.toLowerCase())) {
-      return false;
-    }
-    
-    // Filter by selected specifications
-    if (filters.selectedSpecs && filters.selectedSpecs.length > 0) {
-      // Check each selected specification
-      for (const specFilter of filters.selectedSpecs) {
-        const [category, property, value] = specFilter.split(':');
-        
-        // Handle resolution filters
-        if (category === 'resolution') {
-          if (product.resolution !== property) {
-            return false;
-          }
-          continue;
-        }
-        
-        // Get the appropriate specs object based on the category
-        const specs = product.specs || {};
-        const categorySpecs = specs[category] || {};
-        
-        // Check if the property exists and matches the value (if provided)
-        if (value) {
-          // For numeric comparisons (e.g., FOV >= 140)
-          const numValue = parseInt(value, 10);
-          if (!isNaN(numValue)) {
-            if (category === 'physical' && property === 'fov') {
-              if (!categorySpecs[property] || categorySpecs[property] < numValue) {
-                return false;
-              }
-            } else if (category === 'physical' && property === 'channels') {
-              if (!categorySpecs[property] || categorySpecs[property] < numValue) {
-                return false;
-              }
-            }
-          }
-        } else {
-          // For boolean properties (e.g., wifi, parkingMode)
-          if (!categorySpecs[property]) {
-            return false;
-          }
-        }
-      }
-    }
-    
-    // Filter by price range if provided
-    const price = filters.marketplace === 'amazon_uk' ? product.price.amazon_uk : product.price.amazon_com;
-    if (filters.minPrice && price < filters.minPrice) {
-      return false;
-    }
-    if (filters.maxPrice && price > filters.maxPrice) {
-      return false;
-    }
-    
-    // Filter by minimum rating if provided
-    if (filters.minRating && product.rating < filters.minRating) {
-      return false;
-    }
-    
-    return true;
-  });
+  // Convert legacy filter format to new format
+  const filterState = {
+    marketplace: filters.marketplace,
+    brand: filters.brand,
+    searchText: filters.searchText,
+    priceRange: {
+      min: filters.minPrice,
+      max: filters.maxPrice
+    },
+    minRating: filters.minRating,
+    selectedSpecs: filters.selectedSpecs || []
+  };
+  
+  // Apply filters using the new filter system
+  return applyFilters(dashCamProducts, filterState);
 };
 
 // Sort products based on selected criteria
@@ -266,8 +199,6 @@ const generateStarRating = (rating) => {
   
   return starsHtml;
 };
-
-// Table view rendering function removed - using only grid view
 
 // Render products in grid view
 const renderProductsGrid = (products, marketplace) => {
@@ -706,7 +637,7 @@ const initPage = () => {
   specCheckboxes.forEach(checkbox => {
     checkbox.addEventListener('change', () => {
       updateSelectedSpecsDisplay();
-      applyFilters();
+      updateResults();
     });
   });
   
@@ -723,19 +654,19 @@ const initPage = () => {
   // View mode setting removed - using only grid view
   
   // Apply initial filters and render products
-  applyFilters();
+  updateResults();
   
   // Add event listeners
   marketplaceRadios.forEach(radio => {
-    radio.addEventListener('change', applyFilters);
+    radio.addEventListener('change', updateResults);
   });
   
-  brandSelect.addEventListener('change', applyFilters);
-  searchInput.addEventListener('input', debounce(applyFilters, 300));
-  minPriceInput.addEventListener('input', debounce(applyFilters, 300));
-  maxPriceInput.addEventListener('input', debounce(applyFilters, 300));
-  minRatingSelect.addEventListener('change', applyFilters);
-  sortSelect.addEventListener('change', applyFilters);
+  brandSelect.addEventListener('change', updateResults);
+  searchInput.addEventListener('input', debounce(updateResults, 300));
+  minPriceInput.addEventListener('input', debounce(updateResults, 300));
+  maxPriceInput.addEventListener('input', debounce(updateResults, 300));
+  minRatingSelect.addEventListener('change', updateResults);
+  sortSelect.addEventListener('change', updateResults);
   
   // View mode button event listeners removed - using only grid view
   
@@ -760,7 +691,7 @@ const initPage = () => {
     updateSelectedSpecsDisplay();
     
     // Apply filters
-    applyFilters();
+    updateResults();
   });
 };
 
@@ -788,7 +719,7 @@ const updateSelectedSpecsDisplay = () => {
       if (checkbox) {
         checkbox.checked = false;
         updateSelectedSpecsDisplay();
-        applyFilters();
+        updateResults();
       }
     });
     
@@ -796,47 +727,35 @@ const updateSelectedSpecsDisplay = () => {
   });
 };
 
-// Apply filters and render products
-const applyFilters = () => {
-  // Get filter values
-  const marketplace = document.querySelector('input[name="marketplace"]:checked').value;
-  const brand = document.getElementById('brand-select').value;
-  const searchText = document.getElementById('search-input').value;
-  const minPrice = document.getElementById('min-price').value ? parseFloat(document.getElementById('min-price').value) : '';
-  const maxPrice = document.getElementById('max-price').value ? parseFloat(document.getElementById('max-price').value) : '';
-  const minRating = document.getElementById('min-rating').value ? parseFloat(document.getElementById('min-rating').value) : '';
+// Apply filters and render products - using the new filter system
+const updateResults = () => {
+  // Get the current filter state from UI elements
+  const filterState = getFilterState();
   const sortBy = document.getElementById('sort-select').value;
   
-  // Get selected specifications
-  const checkedCheckboxes = document.querySelectorAll('input[name="specs"]:checked');
-  const selectedSpecs = Array.from(checkedCheckboxes).map(checkbox => checkbox.value);
-  
-  // View mode handling removed - using only grid view
-  const viewMode = 'grid'; // Always use grid view
-  
-  // Create filters object
+  // Create legacy filters object for compatibility with existing functions
   const filters = {
-    marketplace,
-    brand,
-    searchText,
-    selectedSpecs,
-    minPrice,
-    maxPrice,
-    minRating
+    marketplace: filterState.marketplace,
+    brand: filterState.brand,
+    searchText: filterState.searchText,
+    selectedSpecs: filterState.selectedSpecs,
+    minPrice: filterState.priceRange.min,
+    maxPrice: filterState.priceRange.max,
+    minRating: filterState.minRating
   };
   
   // Filter and sort products
   const filteredProducts = filterProducts(filters);
-  const sortedProducts = sortProducts(filteredProducts, sortBy, marketplace);
+  const sortedProducts = sortProducts(filteredProducts, sortBy, filterState.marketplace);
   
   // Update results count
   updateResultsCount(sortedProducts.length);
   
   // Always render products in grid view
-  renderProductsGrid(sortedProducts, marketplace);
+  renderProductsGrid(sortedProducts, filterState.marketplace);
   
   // Update URL parameters
-  updateUrlParams(filters, sortBy, viewMode);
+  updateUrlParams(filters, sortBy, 'grid');
 };
 
 // Debounce function to limit how often a function can be called
