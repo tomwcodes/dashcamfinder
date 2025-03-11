@@ -995,7 +995,13 @@ button.disabled:hover, .button.disabled:hover {
 
 .region-flag {
   margin-right: var(--space-sm);
-  font-size: var(--font-size-lg);
+  display: flex;
+  align-items: center;
+}
+
+.region-flag svg {
+  width: 24px;
+  height: 24px;
 }
 
 .us-flag {
