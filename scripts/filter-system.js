@@ -27,7 +27,88 @@ const filterRegistry = {
     type: 'text',
     predicate: (product, value) => {
       if (!value) return true;
-      return product.model.toLowerCase().includes(value.toLowerCase());
+      
+      const searchTerm = value.toLowerCase();
+      
+      // Search in model and brand
+      if (product.model.toLowerCase().includes(searchTerm) || 
+          product.brand.toLowerCase().includes(searchTerm)) {
+        return true;
+      }
+      
+      // Search in features array if it exists
+      if (Array.isArray(product.features) && product.features.length > 0) {
+        for (const feature of product.features) {
+          if (feature.toLowerCase().includes(searchTerm)) {
+            return true;
+          }
+        }
+      }
+      
+      // Search in processed specifications if they exist
+      if (product.specs) {
+        // Search in video specs
+        const videoSpecs = product.specs.video || {};
+        for (const [key, val] of Object.entries(videoSpecs)) {
+          if (typeof val === 'string' && val.toLowerCase().includes(searchTerm)) {
+            return true;
+          }
+          if (key.toLowerCase().includes(searchTerm)) {
+            return true;
+          }
+        }
+        
+        // Search in physical specs
+        const physicalSpecs = product.specs.physical || {};
+        for (const [key, val] of Object.entries(physicalSpecs)) {
+          if (typeof val === 'string' && val.toLowerCase().includes(searchTerm)) {
+            return true;
+          }
+          if (key.toLowerCase().includes(searchTerm)) {
+            return true;
+          }
+        }
+        
+        // Search in connectivity specs
+        const connectivitySpecs = product.specs.connectivity || {};
+        for (const [key, val] of Object.entries(connectivitySpecs)) {
+          if (typeof val === 'string' && val.toLowerCase().includes(searchTerm)) {
+            return true;
+          }
+          if (key.toLowerCase().includes(searchTerm)) {
+            return true;
+          }
+        }
+        
+        // Search in features specs
+        const featureSpecs = product.specs.features || {};
+        for (const [key, val] of Object.entries(featureSpecs)) {
+          if (typeof val === 'string' && val.toLowerCase().includes(searchTerm)) {
+            return true;
+          }
+          if (key.toLowerCase().includes(searchTerm)) {
+            return true;
+          }
+        }
+        
+        // Search in storage specs
+        const storageSpecs = product.specs.storage || {};
+        for (const [key, val] of Object.entries(storageSpecs)) {
+          if (typeof val === 'string' && val.toLowerCase().includes(searchTerm)) {
+            return true;
+          }
+          if (key.toLowerCase().includes(searchTerm)) {
+            return true;
+          }
+        }
+      }
+      
+      // Search in resolution field if it exists
+      if (product.resolution && product.resolution.toLowerCase().includes(searchTerm)) {
+        return true;
+      }
+      
+      return false;
     }
   },
   priceRange: {
