@@ -631,7 +631,7 @@ button.outline:hover, .button.outline:hover {
 
 .product-card-actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 /* Specification Badges */

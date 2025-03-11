@@ -11,7 +11,7 @@ The project has a functional implementation with the following features:
 - Filtering system by marketplace, brand, model, resolution, price range, and rating
 - Sorting options by popularity, price, rating, and release date
 - Two view modes: table view (without images) and grid view (with images)
-- Streamlined table view with only essential columns (Brand, Product, Price, Rating, Link)
+- Streamlined table view with only essential columns (Brand, Product, Specs, Price, Rating, Link)
 - Simplified grid view with focus on key product information
 - Horizontal rating stars layout for improved readability and user experience
 - URL parameter management for shareable filtered views
@@ -22,6 +22,7 @@ The project has a functional implementation with the following features:
 - Recently reset and refreshed product data to ensure up-to-date information
 - Improved Oxylabs API response parsing with robust property access paths and fallback mechanisms
 - Marketplace-specific product filtering to ensure products only appear in their respective marketplace sections
+- Fixed duplicate resolution text in list view specs column to avoid redundancy
 
 ## Project Structure
 ```

@@ -290,17 +290,14 @@ const renderProductsTable = (products, marketplace) => {
       badges.push(`<span class="spec-badge parking">Parking Mode</span>`);
     }
     
-    // Create key specs list
-    const specsList = [];
-    
-    // Add resolution with fps if available
-    if (videoSpecs.resolution) {
-      let resText = videoSpecs.resolution;
-      if (videoSpecs.fps) {
-        resText += ` @ ${videoSpecs.fps}fps`;
-      }
-      specsList.push(resText);
-    }
+  // Create key specs list
+  const specsList = [];
+  
+  // We don't need to add resolution text here since it's already shown as a badge
+  // Add fps if available
+  if (videoSpecs.resolution && videoSpecs.fps) {
+    specsList.push(`${videoSpecs.fps}fps`);
+  }
     
     // Add screen size if available
     if (physicalSpecs.screenSize) {
@@ -344,7 +341,7 @@ const renderProductsTable = (products, marketplace) => {
               ${badges.join('')}
             </div>
             <div class="spec-details">
-              ${specsList.length > 0 ? specsList.join(' • ') : 'Specifications not available'}
+              ${specsList.length > 0 ? specsList.join(' • ') : ''}
             </div>
           </div>
         </td>

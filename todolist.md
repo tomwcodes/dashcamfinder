@@ -31,3 +31,4 @@
 - [ ] Create a contact form
 - [ ] Further improve feature extraction for products with missing features
 - [x] Remove features and resolution columns from results data
+- [x] Fix duplicate resolution text in list view specs column
