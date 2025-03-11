@@ -26,19 +26,11 @@ const AMAZON_SEARCH_URLS = [
 // Product URLs - Add specific product URLs you want to scrape
 const PRODUCT_URLS = [
   // Garmin dash cams (these have been verified to work)
-  'https://www.amazon.com/Garmin-Voice-Control-Display-Camera/dp/B07R638L8N', // Garmin Dash Cam 66W
-  // REDTIGER dash cams (these have been verified to work)
-  'https://www.amazon.com/REDTIGER-Dashboard-G-Sensor-Recording-Detection/dp/B07RLTXMWS', // REDTIGER F7N
-  // Rove dash cams (these have been verified to work)
-  'https://www.amazon.com/ROVE-Dashboard-Recorder-G-Sensor-Recording/dp/B074JT3698', // ROVE R2-4K
-  // Additional popular dash cams
-  'https://www.amazon.com/REDTIGER-Recorder-Dashboard-G-Sensor-Recording/dp/B07Q5R22DV', // REDTIGER F7N 4K
-  'https://www.amazon.com/70mai-Dashboard-Recording-G-Sensor-Parking/dp/B07SRQH4R7', // 70mai Pro
-  'https://www.amazon.com/CHORTAU-Dashboard-G-Sensor-Recording-Detection/dp/B07Q5R22DV', // CHORTAU Dash Cam
-  'https://www.amazon.com/APEMAN-Dashboard-G-Sensor-Recording-Detection/dp/B07GRV85NP', // APEMAN Dash Cam
-  'https://www.amazon.com/Kingslim-Dashboard-Enhanced-G-Sensor-Recording/dp/B08LMWN7SL', // Kingslim D4
-  'https://www.amazon.com/AUKEY-Dashboard-Supercapacitor-Recording-Detection/dp/B072FGL63X', // AUKEY DR02
-  'https://www.amazon.com/Crosstour-Dashboard-Recorder-Recording-Detection/dp/B07DVJ5DB9' // Crosstour CR900
+'https://www.amazon.com/REDTIGER-Camera-Included-170%C2%B0Wide-Parking/dp/B098WVKF19?crid=TS5ZRL4YVI9A&dib=eyJ2IjoiMSJ9.pMraDSsxPhcS1gP0VySDl9pZE74IbiCsgMSDlq-TbkFrikTO4FZlXeyWFKyMVj73xFevtt-1gOgJtBacDvai2Vm-CJxceH9zup3YWvUm0JVZsNrz5Ko2N3LQyu4KHZyki8GTA7wb_WcuTedJpqzbDp9k1H8xKH-hZ1lmqxzIveXRYEhY4GmWSgPn9pSX-eJ9Tmgjr7vBPMnGiIgUVbb7NUGV_PCtqUyMLd9TS5uZMjo.44ITZXGUOROtd2zTLfz7S9Agkm7IMbbURfhKQLRyiyI&dib_tag=se&keywords=car+dash+cam&qid=1741691366&refresh=1&sprefix=car+dash%2Caps%2C720&sr=8-1',
+'https://www.amazon.com/ROVE-R2-4K-DUAL-STARVIS-Included/dp/B0D6J5B98H?crid=TS5ZRL4YVI9A&dib=eyJ2IjoiMSJ9.pMraDSsxPhcS1gP0VySDl9pZE74IbiCsgMSDlq-TbkFrikTO4FZlXeyWFKyMVj73xFevtt-1gOgJtBacDvai2Vm-CJxceH9zup3YWvUm0JVZsNrz5Ko2N3LQyu4KHZyki8GTA7wb_WcuTedJpqzbDp9k1H8xKH-hZ1lmqxzIveXRYEhY4GmWSgPn9pSX-eJ9Tmgjr7vBPMnGiIgUVbb7NUGV_PCtqUyMLd9TS5uZMjo.44ITZXGUOROtd2zTLfz7S9Agkm7IMbbURfhKQLRyiyI&dib_tag=se&keywords=car+dash+cam&qid=1741691454&refresh=1&sprefix=car+dash%2Caps%2C720&sr=8-2',
+'https://www.amazon.com/WOLFBOX-Mirror-Backup-Camera-Screen/dp/B0811Q28N6?crid=TS5ZRL4YVI9A&dib=eyJ2IjoiMSJ9.pMraDSsxPhcS1gP0VySDl9pZE74IbiCsgMSDlq-TbkFrikTO4FZlXeyWFKyMVj73xFevtt-1gOgJtBacDvai2Vm-CJxceH9zup3YWvUm0JVZsNrz5Ko2N3LQyu4KHZyki8GTA7wb_WcuTedJpqzbDp9k1H8xKH-hZ1lmqxzIveXRYEhY4GmWSgPn9pSX-eJ9Tmgjr7vBPMnGiIgUVbb7Na9zVbfou034x1trkJ6ZqFY.Z2vI-pX_K8qqIDOKSQtQcmmAhCjgCexVkpl9-7cHssU&dib_tag=se&keywords=car+dash+cam&qid=1741691484&refresh=1&sprefix=car+dash%2Caps%2C720&sr=8-10',
+'https://www.amazon.com/R2-4K-Dashboard-Camera-Recorder-Vision/dp/B074JT3698?crid=TS5ZRL4YVI9A&dib=eyJ2IjoiMSJ9.pMraDSsxPhcS1gP0VySDl9pZE74IbiCsgMSDlq-TbkFrikTO4FZlXeyWFKyMVj73xFevtt-1gOgJtBacDvai2Vm-CJxceH9zup3YWvUm0JVZsNrz5Ko2N3LQyu4KHZyki8GTA7wb_WcuTedJpqzbDp9k1H8xKH-hZ1lmqxzIveXRYEhY4GmWSgPn9pSX-eJ9Tmgjr7vBPMnGiIgUVbb7Na9zVbfou034x1trkJ6ZqFY.Z2vI-pX_K8qqIDOKSQtQcmmAhCjgCexVkpl9-7cHssU&dib_tag=se&keywords=car+dash+cam&qid=1741691514&refresh=1&sprefix=car+dash%2Caps%2C720&sr=8-13',
+
 ];
 
 /**

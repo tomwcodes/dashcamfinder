@@ -100,3 +100,10 @@
 [2025-03-11T10:16:46.932Z] Scraped 4 products from PRODUCT_URLS
 [2025-03-11T10:16:46.942Z] Saved 4 products to /home/kayakertom/newdashcam/data/products.json
 [2025-03-11T10:16:46.945Z] Product data reset completed successfully
+[2025-03-11T11:43:27.117Z] Starting product data reset...
+[2025-03-11T11:43:27.148Z] Created backup of products file: /home/kayakertom/dashcamfinder/data/products.backup.json
+[2025-03-11T11:43:27.149Z] Deleting all existing product data...
+[2025-03-11T11:43:27.151Z] Scraping 4 products from PRODUCT_URLS array...
+[2025-03-11T11:44:50.831Z] Scraped 3 products from PRODUCT_URLS
+[2025-03-11T11:44:50.849Z] Saved 3 products to /home/kayakertom/dashcamfinder/data/products.json
+[2025-03-11T11:44:50.860Z] Product data reset completed successfully

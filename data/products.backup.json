@@ -18,23 +18,39 @@
     }
   },
   {
-    "id": 4848,
-    "brand": "Garmin",
-    "model": "010-02062-00  Mini, Car Key-Sized , 140-Degree Wide-Angle Lens, Captures 1080P HD Footage, Very Compact with Automatic Incident Detection and Recording",
-    "image": "https://m.media-amazon.com/images/I/6143JAwoY6L._AC_SL1500_.jpg",
+    "id": 7815,
+    "brand": "CHORTAU",
+    "model": "Front and Rear  Dual  3 inch  Full HD 170° Wide Angle Backup Camera with Night Vision WDR G-Sensor Parking Monitor Loop Recording Motion Detection",
+    "image": "https://m.media-amazon.com/images/I/71YgezI8JZL._AC_SL1486_.jpg",
     "price": {
-      "amazon_com": 0
+      "amazon_com": -1
     },
-    "rating": 4.2,
-    "reviewCount": 2095,
+    "rating": 4.1,
+    "reviewCount": 27686,
     "resolution": "1080p",
-    "features": [
-      "Garmin Dash Cam mini captures high-quality 1080P HD footage in a dash camera about as small as a car key. Once plugged into your vehicle’s power source, The camera continually records and automatically saves video of incidents. Notice: some jurisdictions regulate or prohibit use of this device. It is your responsibility to know and comply with applicable laws and rights to privacy in jurisdictions where you plan to use this Device."
-    ],
+    "features": [],
     "releaseDate": "2024-03-11",
-    "popularity": 52,
+    "popularity": 91,
     "amazonUrl": {
-      "com": "https://www.amazon.com/Garmin-Voice-Control-Display-Camera/dp/B07R638L8N"
+      "com": "https://www.amazon.com/REDTIGER-Recorder-Dashboard-G-Sensor-Recording/dp/B07Q5R22DV"
+    }
+  },
+  {
+    "id": 2534,
+    "brand": "VIOFO",
+    "model": "A119 V3 2K 2560x1440P Quad HD+ 60FPS Front Car era, 5MP STARVIS Sensor, 140-Degree Wide Angle, GPS Included, Buffered Parking Mode, True HDR, Motion Detection, Time Lapse",
+    "image": "https://m.media-amazon.com/images/I/71fOFkbtcML._AC_SL1500_.jpg",
+    "price": {
+      "amazon_com": 119.99
+    },
+    "rating": 4.4,
+    "reviewCount": 6782,
+    "resolution": "1440p",
+    "features": [],
+    "releaseDate": "2024-03-11",
+    "popularity": 78,
+    "amazonUrl": {
+      "com": "https://www.amazon.com/70mai-Dashboard-Recording-G-Sensor-Parking/dp/B07SRQH4R7"
     }
   },
   {
@@ -43,7 +59,7 @@
     "model": "Rexing V1 Basic  1080P FHD DVR Car Driving Recorder, 2.4\" LCD Screen 170°Wide Angle, G-Sensor, WDR, Parking Monitor, Loop Recording",
     "image": "https://m.media-amazon.com/images/I/7110BsMliaL._AC_SL1500_.jpg",
     "price": {
-      "amazon_com": 0
+      "amazon_com": -1
     },
     "rating": 4.2,
     "reviewCount": 724,

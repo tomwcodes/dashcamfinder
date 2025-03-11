@@ -1,5 +1,41 @@
 [
   {
+    "id": 4239,
+    "brand": "REDTIGER",
+    "model": "Front Rear, 4K/2.5K Full HD era for Cars, Included 32GB Card, Built-in Wi-Fi GPS, 3.16” IPS Screen, Night Vision, 170°Wide Angle, WDR, 24H Parking Mode(F7NP)",
+    "image": "https://m.media-amazon.com/images/I/71hLmfRBteL._AC_SL1500_.jpg",
+    "price": {
+      "amazon_com": 119.99
+    },
+    "rating": 4.3,
+    "reviewCount": 14035,
+    "resolution": "4K",
+    "features": [],
+    "releaseDate": "2024-03-11",
+    "popularity": 93,
+    "amazonUrl": {
+      "com": "https://www.amazon.com/REDTIGER-Camera-Included-170%C2%B0Wide-Parking/dp/B098WVKF19?crid=TS5ZRL4YVI9A&dib=eyJ2IjoiMSJ9.pMraDSsxPhcS1gP0VySDl9pZE74IbiCsgMSDlq-TbkFrikTO4FZlXeyWFKyMVj73xFevtt-1gOgJtBacDvai2Vm-CJxceH9zup3YWvUm0JVZsNrz5Ko2N3LQyu4KHZyki8GTA7wb_WcuTedJpqzbDp9k1H8xKH-hZ1lmqxzIveXRYEhY4GmWSgPn9pSX-eJ9Tmgjr7vBPMnGiIgUVbb7NUGV_PCtqUyMLd9TS5uZMjo.44ITZXGUOROtd2zTLfz7S9Agkm7IMbbURfhKQLRyiyI&dib_tag=se&keywords=car+dash+cam&qid=1741691366&refresh=1&sprefix=car+dash,aps,720&sr=8-1"
+    }
+  },
+  {
+    "id": 9947,
+    "brand": "WOLFBOX",
+    "model": "G840S 12\" 4K Mirror  Backup Camera, 2160P Full HD Smart Rearview Mirror for Cars & Trucks, Front and Rear View Dual Cameras, Night Vision, Parking Assistance, Included 32GB Card & GPS",
+    "image": "https://m.media-amazon.com/images/I/71Gxtsz6d5L._AC_SL1500_.jpg",
+    "price": {
+      "amazon_com": 101.99
+    },
+    "rating": 4.3,
+    "reviewCount": 12391,
+    "resolution": "4K",
+    "features": [],
+    "releaseDate": "2024-03-11",
+    "popularity": 93,
+    "amazonUrl": {
+      "com": "https://www.amazon.com/WOLFBOX-Mirror-Backup-Camera-Screen/dp/B0811Q28N6?crid=TS5ZRL4YVI9A&dib=eyJ2IjoiMSJ9.pMraDSsxPhcS1gP0VySDl9pZE74IbiCsgMSDlq-TbkFrikTO4FZlXeyWFKyMVj73xFevtt-1gOgJtBacDvai2Vm-CJxceH9zup3YWvUm0JVZsNrz5Ko2N3LQyu4KHZyki8GTA7wb_WcuTedJpqzbDp9k1H8xKH-hZ1lmqxzIveXRYEhY4GmWSgPn9pSX-eJ9Tmgjr7vBPMnGiIgUVbb7Na9zVbfou034x1trkJ6ZqFY.Z2vI-pX_K8qqIDOKSQtQcmmAhCjgCexVkpl9-7cHssU&dib_tag=se&keywords=car+dash+cam&qid=1741691484&refresh=1&sprefix=car+dash,aps,720&sr=8-10"
+    }
+  },
+  {
     "id": 7319,
     "brand": "ROVE",
     "model": "R2-4K  Built-in WiFi 6 GPS Car  Recorder with UHD 2160P, 2.4\" IPS Screen, 150° Wide Angle, WDR, Night Vision",
@@ -14,61 +50,7 @@
     "releaseDate": "2024-03-11",
     "popularity": 93,
     "amazonUrl": {
-      "com": "https://www.amazon.com/ROVE-Dashboard-Recorder-G-Sensor-Recording/dp/B074JT3698"
-    }
-  },
-  {
-    "id": 7815,
-    "brand": "CHORTAU",
-    "model": "Front and Rear  Dual  3 inch  Full HD 170° Wide Angle Backup Camera with Night Vision WDR G-Sensor Parking Monitor Loop Recording Motion Detection",
-    "image": "https://m.media-amazon.com/images/I/71YgezI8JZL._AC_SL1486_.jpg",
-    "price": {
-      "amazon_com": -1
-    },
-    "rating": 4.1,
-    "reviewCount": 27686,
-    "resolution": "1080p",
-    "features": [],
-    "releaseDate": "2024-03-11",
-    "popularity": 91,
-    "amazonUrl": {
-      "com": "https://www.amazon.com/REDTIGER-Recorder-Dashboard-G-Sensor-Recording/dp/B07Q5R22DV"
-    }
-  },
-  {
-    "id": 2534,
-    "brand": "VIOFO",
-    "model": "A119 V3 2K 2560x1440P Quad HD+ 60FPS Front Car era, 5MP STARVIS Sensor, 140-Degree Wide Angle, GPS Included, Buffered Parking Mode, True HDR, Motion Detection, Time Lapse",
-    "image": "https://m.media-amazon.com/images/I/71fOFkbtcML._AC_SL1500_.jpg",
-    "price": {
-      "amazon_com": 119.99
-    },
-    "rating": 4.4,
-    "reviewCount": 6782,
-    "resolution": "1440p",
-    "features": [],
-    "releaseDate": "2024-03-11",
-    "popularity": 78,
-    "amazonUrl": {
-      "com": "https://www.amazon.com/70mai-Dashboard-Recording-G-Sensor-Parking/dp/B07SRQH4R7"
-    }
-  },
-  {
-    "id": 9694,
-    "brand": "REXING",
-    "model": "Rexing V1 Basic  1080P FHD DVR Car Driving Recorder, 2.4\" LCD Screen 170°Wide Angle, G-Sensor, WDR, Parking Monitor, Loop Recording",
-    "image": "https://m.media-amazon.com/images/I/7110BsMliaL._AC_SL1500_.jpg",
-    "price": {
-      "amazon_com": -1
-    },
-    "rating": 4.2,
-    "reviewCount": 724,
-    "resolution": "1080p",
-    "features": [],
-    "releaseDate": "2024-03-11",
-    "popularity": 46,
-    "amazonUrl": {
-      "com": "https://www.amazon.com/REDTIGER-Dashboard-G-Sensor-Recording-Detection/dp/B07RLTXMWS"
+      "com": "https://www.amazon.com/R2-4K-Dashboard-Camera-Recorder-Vision/dp/B074JT3698?crid=TS5ZRL4YVI9A&dib=eyJ2IjoiMSJ9.pMraDSsxPhcS1gP0VySDl9pZE74IbiCsgMSDlq-TbkFrikTO4FZlXeyWFKyMVj73xFevtt-1gOgJtBacDvai2Vm-CJxceH9zup3YWvUm0JVZsNrz5Ko2N3LQyu4KHZyki8GTA7wb_WcuTedJpqzbDp9k1H8xKH-hZ1lmqxzIveXRYEhY4GmWSgPn9pSX-eJ9Tmgjr7vBPMnGiIgUVbb7Na9zVbfou034x1trkJ6ZqFY.Z2vI-pX_K8qqIDOKSQtQcmmAhCjgCexVkpl9-7cHssU&dib_tag=se&keywords=car+dash+cam&qid=1741691514&refresh=1&sprefix=car+dash,aps,720&sr=8-13"
     }
   }
 ]
