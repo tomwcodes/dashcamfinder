@@ -1,0 +1,158 @@
+/* Mobile Comparison View Styles */
+.mobile-comparison-view {
+  display: none; /* Hidden by default, shown only on mobile */
+}
+
+.mobile-comparison-cards {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.mobile-card-container {
+  display: flex;
+  transition: transform 0.3s ease;
+  width: 100%;
+}
+
+.mobile-product-card {
+  flex: 0 0 100%;
+  width: 100%;
+  background-color: white;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.mobile-product-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: var(--space-md);
+  margin-bottom: var(--space-md);
+  border-bottom: 1px solid var(--neutral-200);
+}
+
+.mobile-product-image {
+  max-width: 120px;
+  max-height: 80px;
+  object-fit: contain;
+  margin-bottom: var(--space-sm);
+}
+
+.mobile-product-header h3 {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--space-xs);
+  text-align: center;
+}
+
+.mobile-product-price {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--secondary-color);
+  margin-bottom: var(--space-xs);
+}
+
+.mobile-product-rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+}
+
+.mobile-feature-list {
+  margin-bottom: var(--space-md);
+}
+
+.mobile-feature-item {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-xs) 0;
+  border-bottom: 1px solid var(--neutral-100);
+}
+
+.mobile-feature-name {
+  font-weight: 600;
+  color: var(--neutral-700);
+}
+
+.mobile-feature-value {
+  text-align: right;
+}
+
+.mobile-feature-value.positive {
+  color: var(--accent-color);
+}
+
+.mobile-feature-value.negative {
+  color: var(--secondary-color);
+}
+
+.mobile-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.mobile-navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.mobile-nav-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.mobile-nav-button:disabled {
+  background-color: var(--neutral-300);
+  cursor: not-allowed;
+}
+
+.mobile-nav-button:hover:not(:disabled) {
+  background-color: var(--primary-dark);
+}
+
+.mobile-card-indicator {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-xs);
+  margin-top: var(--space-md);
+}
+
+.indicator-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--neutral-300);
+  transition: background-color var(--transition-fast);
+}
+
+.indicator-dot.active {
+  background-color: var(--primary-color);
+}
+
+/* Media query to show mobile comparison view on small screens */
+@media (max-width: 768px) {
+  .comparison-table-container {
+    display: none; /* Hide the table view on mobile */
+  }
+  
+  .mobile-comparison-view {
+    display: block; /* Show the mobile view */
+  }
+}

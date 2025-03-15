@@ -700,6 +700,8 @@ const renderComparisonView = (marketplace) => {
         <p>Comparing ${favouritedProductsData.length} products</p>
         <button id="clear-comparison" class="button outline">Clear All</button>
       </div>
+      
+      <!-- Desktop Table View -->
       <div class="comparison-table-container">
         <table class="comparison-table">
           <thead>
@@ -823,6 +825,124 @@ const renderComparisonView = (marketplace) => {
           </tbody>
         </table>
       </div>
+      
+      <!-- Mobile Card View -->
+      <div class="mobile-comparison-view">
+        <div class="mobile-comparison-cards">
+          <div class="mobile-card-container" id="mobile-card-container">
+            ${favouritedProductsData.map((product, index) => {
+              const videoSpecs = product.specs?.video || {};
+              const physicalSpecs = product.specs?.physical || {};
+              const connectivitySpecs = product.specs?.connectivity || {};
+              const featureSpecs = product.specs?.features || {};
+              const amazonUrl = marketplace === 'amazon_uk' ? product.amazonUrl.uk : product.amazonUrl.com;
+              const price = marketplace === 'amazon_uk' ? product.price.amazon_uk : product.price.amazon_com;
+              
+              return `
+                <div class="mobile-product-card" data-index="${index}">
+                  <div class="mobile-product-header">
+                    <img src="${product.image || `https://via.placeholder.com/120x80/f0f0f0/333333?text=${encodeURIComponent(product.brand)}`}" 
+                         alt="${product.brand} ${product.model}" class="mobile-product-image">
+                    <h3>${product.brand} ${product.cleanModelName || product.model}</h3>
+                    <div class="mobile-product-price">${formatPrice(price, marketplace)}</div>
+                    <div class="mobile-product-rating">
+                      <div class="stars">${generateStarRating(product.rating)}</div>
+                      <div class="rating-number">${product.rating}</div>
+                    </div>
+                  </div>
+                  
+                  <div class="mobile-feature-list">
+                    <div class="mobile-feature-item">
+                      <div class="mobile-feature-name">Resolution</div>
+                      <div class="mobile-feature-value">${videoSpecs.resolution || 'N/A'}</div>
+                    </div>
+                    
+                    <div class="mobile-feature-item">
+                      <div class="mobile-feature-name">Field of View</div>
+                      <div class="mobile-feature-value">${physicalSpecs.fov ? physicalSpecs.fov + '°' : 'N/A'}</div>
+                    </div>
+                    
+                    <div class="mobile-feature-item">
+                      <div class="mobile-feature-name">Night Vision</div>
+                      <div class="mobile-feature-value ${videoSpecs.nightVision ? 'positive' : 'negative'}">
+                        ${videoSpecs.nightVision ? '<i class="fas fa-check"></i> Yes' : '<i class="fas fa-times"></i> No'}
+                      </div>
+                    </div>
+                    
+                    <div class="mobile-feature-item">
+                      <div class="mobile-feature-name">WiFi</div>
+                      <div class="mobile-feature-value ${connectivitySpecs.wifi ? 'positive' : 'negative'}">
+                        ${connectivitySpecs.wifi ? '<i class="fas fa-check"></i> Yes' : '<i class="fas fa-times"></i> No'}
+                      </div>
+                    </div>
+                    
+                    <div class="mobile-feature-item">
+                      <div class="mobile-feature-name">GPS</div>
+                      <div class="mobile-feature-value ${connectivitySpecs.gps ? 'positive' : 'negative'}">
+                        ${connectivitySpecs.gps ? '<i class="fas fa-check"></i> Yes' : '<i class="fas fa-times"></i> No'}
+                      </div>
+                    </div>
+                    
+                    <div class="mobile-feature-item">
+                      <div class="mobile-feature-name">Parking Mode</div>
+                      <div class="mobile-feature-value ${featureSpecs.parkingMode ? 'positive' : 'negative'}">
+                        ${featureSpecs.parkingMode ? '<i class="fas fa-check"></i> Yes' : '<i class="fas fa-times"></i> No'}
+                      </div>
+                    </div>
+                    
+                    <div class="mobile-feature-item">
+                      <div class="mobile-feature-name">Motion Detection</div>
+                      <div class="mobile-feature-value ${featureSpecs.motionDetection ? 'positive' : 'negative'}">
+                        ${featureSpecs.motionDetection ? '<i class="fas fa-check"></i> Yes' : '<i class="fas fa-times"></i> No'}
+                      </div>
+                    </div>
+                    
+                    <div class="mobile-feature-item">
+                      <div class="mobile-feature-name">Loop Recording</div>
+                      <div class="mobile-feature-value ${featureSpecs.loopRecording ? 'positive' : 'negative'}">
+                        ${featureSpecs.loopRecording ? '<i class="fas fa-check"></i> Yes' : '<i class="fas fa-times"></i> No'}
+                      </div>
+                    </div>
+                    
+                    <div class="mobile-feature-item">
+                      <div class="mobile-feature-name">Emergency Recording</div>
+                      <div class="mobile-feature-value ${featureSpecs.emergencyRecording ? 'positive' : 'negative'}">
+                        ${featureSpecs.emergencyRecording ? '<i class="fas fa-check"></i> Yes' : '<i class="fas fa-times"></i> No'}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="mobile-card-actions">
+                    ${price === -1 ? 
+                      `<button class="button buy-button disabled" disabled>Currently Unavailable</button>` : 
+                      `<a href="${amazonUrl}" target="_blank" class="button buy-button">View on Amazon</a>`
+                    }
+                    <button class="remove-from-comparison button outline" data-product-id="${product.id}">
+                      <i class="fas fa-times"></i> Remove from Comparison
+                    </button>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+          
+          <div class="mobile-navigation">
+            <button id="prev-card" class="mobile-nav-button" disabled>
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <button id="next-card" class="mobile-nav-button" ${favouritedProductsData.length <= 1 ? 'disabled' : ''}>
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+          
+          <div class="mobile-card-indicator">
+            ${favouritedProductsData.map((_, index) => 
+              `<div class="indicator-dot ${index === 0 ? 'active' : ''}"></div>`
+            ).join('')}
+          </div>
+        </div>
+      </div>
+      
       <div class="comparison-actions">
         <button id="back-to-products" class="button outline">Back to All Products</button>
       </div>
@@ -851,6 +971,84 @@ const renderComparisonView = (marketplace) => {
       renderComparisonView(marketplace);
     });
   });
+  
+  // Mobile card navigation
+  if (favouritedProductsData.length > 1) {
+    const cardContainer = document.getElementById('mobile-card-container');
+    const prevButton = document.getElementById('prev-card');
+    const nextButton = document.getElementById('next-card');
+    const indicatorDots = document.querySelectorAll('.indicator-dot');
+    let currentIndex = 0;
+    
+    // Function to update the card display
+    const updateCardDisplay = () => {
+      // Update transform to show the current card
+      cardContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+      
+      // Update navigation buttons
+      prevButton.disabled = currentIndex === 0;
+      nextButton.disabled = currentIndex === favouritedProductsData.length - 1;
+      
+      // Update indicator dots
+      indicatorDots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentIndex);
+      });
+    };
+    
+    // Add event listeners for navigation
+    prevButton.addEventListener('click', () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateCardDisplay();
+      }
+    });
+    
+    nextButton.addEventListener('click', () => {
+      if (currentIndex < favouritedProductsData.length - 1) {
+        currentIndex++;
+        updateCardDisplay();
+      }
+    });
+    
+    // Add swipe functionality for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    cardContainer.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, false);
+    
+    cardContainer.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, false);
+    
+    const handleSwipe = () => {
+      const swipeThreshold = 50; // Minimum distance to be considered a swipe
+      
+      if (touchEndX < touchStartX - swipeThreshold) {
+        // Swipe left - go to next card
+        if (currentIndex < favouritedProductsData.length - 1) {
+          currentIndex++;
+          updateCardDisplay();
+        }
+      } else if (touchEndX > touchStartX + swipeThreshold) {
+        // Swipe right - go to previous card
+        if (currentIndex > 0) {
+          currentIndex--;
+          updateCardDisplay();
+        }
+      }
+    };
+    
+    // Allow clicking on indicator dots to navigate
+    indicatorDots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        currentIndex = index;
+        updateCardDisplay();
+      });
+    });
+  }
 };
 
 // Initialize the page with product data
