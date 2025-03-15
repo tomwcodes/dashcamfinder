@@ -1,12 +1,14 @@
 /**
- * Amazon Scraper using Oxylabs API
- * This script handles the integration with Oxylabs E-Commerce Scraper API
+ * Amazon Scraper using Oxylabs Residential Proxies
+ * This script handles the integration with Oxylabs Residential Proxies
  * to collect dash cam product data from Amazon.
  */
 
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
+const fetch = require('node-fetch');
+const { HttpsProxyAgent } = require('https-proxy-agent');
 
 // Load environment variables from .env file
 require('dotenv').config({ path: path.join(__dirname, '.env') });
@@ -14,12 +16,21 @@ require('dotenv').config({ path: path.join(__dirname, '.env') });
 // Get Oxylabs credentials from environment variables
 const OXYLABS_USERNAME = process.env.OXYLABS_USERNAME;
 const OXYLABS_PASSWORD = process.env.OXYLABS_PASSWORD;
+const OXYLABS_PROXY_USERNAME = process.env.OXYLABS_PROXY_USERNAME;
+const OXYLABS_PROXY_PASSWORD = process.env.OXYLABS_PROXY_PASSWORD;
+const OXYLABS_PROXY_SERVER = process.env.OXYLABS_PROXY_SERVER;
 
 // Check if credentials are available
 if (!OXYLABS_USERNAME || !OXYLABS_PASSWORD) {
   console.error('ERROR: Oxylabs credentials not found in environment variables.');
   console.error('Please set OXYLABS_USERNAME and OXYLABS_PASSWORD in your .env file.');
   console.error('See scripts/.env.example for reference.');
+}
+
+// Check if proxy credentials are available
+if (!OXYLABS_PROXY_USERNAME || !OXYLABS_PROXY_PASSWORD || !OXYLABS_PROXY_SERVER) {
+  console.error('ERROR: Oxylabs proxy credentials not found in environment variables.');
+  console.error('Please set OXYLABS_PROXY_USERNAME, OXYLABS_PROXY_PASSWORD, and OXYLABS_PROXY_SERVER in your .env file.');
 }
 
 // Amazon search URLs for dash cams
@@ -33,152 +44,311 @@ const AMAZON_SEARCH_URLS = [
 // Product URLs - Add specific product URLs you want to scrape
 const PRODUCT_URLS = [
   // Garmin dash cams (these have been verified to work)
-'https://www.amazon.com/REDTIGER-Camera-Included-170%C2%B0Wide-Parking/dp/B098WVKF19?crid=TS5ZRL4YVI9A&dib=eyJ2IjoiMSJ9.pMraDSsxPhcS1gP0VySDl9pZE74IbiCsgMSDlq-TbkFrikTO4FZlXeyWFKyMVj73xFevtt-1gOgJtBacDvai2Vm-CJxceH9zup3YWvUm0JVZsNrz5Ko2N3LQyu4KHZyki8GTA7wb_WcuTedJpqzbDp9k1H8xKH-hZ1lmqxzIveXRYEhY4GmWSgPn9pSX-eJ9Tmgjr7vBPMnGiIgUVbb7NUGV_PCtqUyMLd9TS5uZMjo.44ITZXGUOROtd2zTLfz7S9Agkm7IMbbURfhKQLRyiyI&dib_tag=se&keywords=car+dash+cam&qid=1741691366&refresh=1&sprefix=car+dash%2Caps%2C720&sr=8-1',
-'https://www.amazon.com/ROVE-R2-4K-DUAL-STARVIS-Included/dp/B0D6J5B98H?crid=TS5ZRL4YVI9A&dib=eyJ2IjoiMSJ9.pMraDSsxPhcS1gP0VySDl9pZE74IbiCsgMSDlq-TbkFrikTO4FZlXeyWFKyMVj73xFevtt-1gOgJtBacDvai2Vm-CJxceH9zup3YWvUm0JVZsNrz5Ko2N3LQyu4KHZyki8GTA7wb_WcuTedJpqzbDp9k1H8xKH-hZ1lmqxzIveXRYEhY4GmWSgPn9pSX-eJ9Tmgjr7vBPMnGiIgUVbb7NUGV_PCtqUyMLd9TS5uZMjo.44ITZXGUOROtd2zTLfz7S9Agkm7IMbbURfhKQLRyiyI&dib_tag=se&keywords=car+dash+cam&qid=1741691454&refresh=1&sprefix=car+dash%2Caps%2C720&sr=8-2',
-'https://www.amazon.com/WOLFBOX-Mirror-Backup-Camera-Screen/dp/B0811Q28N6?crid=TS5ZRL4YVI9A&dib=eyJ2IjoiMSJ9.pMraDSsxPhcS1gP0VySDl9pZE74IbiCsgMSDlq-TbkFrikTO4FZlXeyWFKyMVj73xFevtt-1gOgJtBacDvai2Vm-CJxceH9zup3YWvUm0JVZsNrz5Ko2N3LQyu4KHZyki8GTA7wb_WcuTedJpqzbDp9k1H8xKH-hZ1lmqxzIveXRYEhY4GmWSgPn9pSX-eJ9Tmgjr7vBPMnGiIgUVbb7Na9zVbfou034x1trkJ6ZqFY.Z2vI-pX_K8qqIDOKSQtQcmmAhCjgCexVkpl9-7cHssU&dib_tag=se&keywords=car+dash+cam&qid=1741691484&refresh=1&sprefix=car+dash%2Caps%2C720&sr=8-10',
-'https://www.amazon.com/R2-4K-Dashboard-Camera-Recorder-Vision/dp/B074JT3698?crid=TS5ZRL4YVI9A&dib=eyJ2IjoiMSJ9.pMraDSsxPhcS1gP0VySDl9pZE74IbiCsgMSDlq-TbkFrikTO4FZlXeyWFKyMVj73xFevtt-1gOgJtBacDvai2Vm-CJxceH9zup3YWvUm0JVZsNrz5Ko2N3LQyu4KHZyki8GTA7wb_WcuTedJpqzbDp9k1H8xKH-hZ1lmqxzIveXRYEhY4GmWSgPn9pSX-eJ9Tmgjr7vBPMnGiIgUVbb7Na9zVbfou034x1trkJ6ZqFY.Z2vI-pX_K8qqIDOKSQtQcmmAhCjgCexVkpl9-7cHssU&dib_tag=se&keywords=car+dash+cam&qid=1741691514&refresh=1&sprefix=car+dash%2Caps%2C720&sr=8-13',
-
+"https://www.amazon.com/REDTIGER-Camera-Included-170%C2%B0Wide-Parking/dp/B098WVKF19?crid=34NPEKYH2ZLUN&dib=eyJ2IjoiMSJ9.bJfIa99xDAJ1uLaHV0bnuExy-NgwMMZC3y6jv-SdA7etHmGXtDbnF56aj1mAuPuM-WDbWwHjGeI9euXogwkEDxZMtGDxhwFSfj5X6Ki2Pqo3u-sGdHutjPI2imwjP6--SIo0ANW7fAmi6-oUem6l_JwSLW5CRMQYeixdY_1cSj_7XICTci2U2yPXodCkYmIRKTo3PeDl836nFuDWJ-tzuanrS_6yA6swfmqGcc1EugU.2ydXndrkl49PvjME5-gev50QVCMxIya9kkRmpFn5KrA&dib_tag=se&keywords=REDTIGER+F7NP&qid=1742043826&sprefix=redtiger+f7np%2Caps%2C994&sr=8-3",
+  "https://www.amazon.com/ROVE-R2-4K-DUAL-STARVIS-Included/dp/B0D6J5B98H?crid=2S8600HGGU00I&dib=eyJ2IjoiMSJ9.fbmQrFB_4WbWWTQMJgk8MUHFl4DGZpLNeZeI70alOGKX8H0IJgMa1DrwcDoXBNHRr-IPDnT4Ev-F3KKvLtTwrIkfQ3DRBv9vL_-rxI2G-f8g5bNeayJn85KkRF-RHRqaHT-vlcBTkqwLM-J4lXm5rV0hNdUvGrG6_lhRJhoU84CriJqSCNSbuV2Pqyj-S392oWGqKum3VQzBQTIJr9RiJVww7Xn6mXAoGo4iv5s-Q_I.JtmqixVNJX1aEDEBWn1sDgUO6R4EfeyJvcFl8NkYUgI&dib_tag=se&keywords=rove+r2&qid=1742043872&sprefix=rove+r2%2Caps%2C378&sr=8-3",
+  "https://www.amazon.com/VIOFO-STARVIS-Control-Parking-Supercapacitor/dp/B0C5MVB7NX?crid=1PV1LJBU7THD9&dib=eyJ2IjoiMSJ9.gYfZw9JImHmo4H1GGP__xZxTYkWfmeG77as2zl9MUE8GrwZvIB8vFVg-q8VK0BW1uZ51rWRy5_T8GXte6c2dNUHJnMznrSbu1ELhuB4IbzIzhIAm8uhSRf2o4Kz7ncCkDnkx08Gv47Xgp6AEjvpBCbREKZPLPccRM3s8_aihSUV57GG5huFKRiBh63-O9HZgqPYk2MFuYRcrRwDpx2pVxxxq8yO4dhrT6YXlsN3VsOc.Pk-uwVZoaY-JIi5CELCoNU3RGV1LQDtN4Y1iOSctam4&dib_tag=se&keywords=VIOFO+A119+Mini&qid=1742043987&sprefix=viofo+a119+mini%2Caps%2C565&sr=8-1",
+  "https://www.amazon.com/Camera-Dashboard-Recorder-Parking-Recording/dp/B0CC9G8G9Q?dib=eyJ2IjoiMSJ9.gU_4ddAohlhcjSh4pje7raFhsAmAkOHUdfY7FvemfqmcqnY-yAv8ofQhMTyAm3nPShtLt-FhImRmi-LOmEXbe0b0SqO2wj6fWfP_phR8LmwHkdCNxRIWv6pZVdCKHWGKUcPrVPjfZHwYHcAIPObetw.iNCJnW04aQxWfLs0XwkMvngLWE6Xh7s2W3hGjuN_5Hs&dib_tag=se&keywords=GMAIPOP+G900&qid=1742044066&sr=8-1",
+  "https://www.amazon.com/Dashcams-Parking-Monitor-Recording-Support/dp/B0BKF6XQVY?crid=3HMXQGMRY272G&dib=eyJ2IjoiMSJ9.OprHLJirSbRZ_UFHFwaT91S3YyxE7EGHbi612be7Nwf2ildLz52_jvZaPeUacQl5HNqMraL6u3Hav1n3vZDviDrUA2Cf7BhY2eNSLVsiQYcgKBh2xuopW3na2ErPzmWwWtrNvvTzkD2guVE7-QVdEaCCBocT9fkdaRQ6EfM9Zs9G5f1VUpT0v2JcPd-zZlc8b4j0dfGgf8bcvPMaJNujeY2HLvKuUqg9kKjTB95uJWE.-a3FoDmI6M2I9Yt4OlTYsDXH_6BRZqZKCzvbjJ26GDU&dib_tag=se&keywords=ARIFAYZ+Q4&qid=1742044121&sprefix=arifayz+q4%2Caps%2C430&sr=8-1",
+"https://www.amazon.co.uk/REDTIGER-Recorder-G-Sensor-Recording-Capacitor-Black/dp/B098WVKF19?dib=eyJ2IjoiMSJ9.y40nKtSbRlHhzWAvtQ8Dtw9ZpK1WtqoKns-nBdrcMHPPQwVZ4xYYQRQWvhydZVqtmt_mtEAncsOsZSTz38fWvmzx_WI43v2VyWytYPw-gi_cjhhXIFluX6Nt6bN6ZhxstSa42FjtKyzQ546naTLrqAIKZwREtTBHSlPfrXcVyNbwvwEhIl32I_JCSAIBBVUMx-TXMlRIJpGj_-jAoz8wl8piAuz1b0oTjeB3-K_9-7c.XPxgjKbNIS8vIHIw340lu95dXZIeoGJw5gZLigIUhAc&dib_tag=se&keywords=REDTIGER+F7NP&qid=1742043753&sr=8-4",
+  "https://www.amazon.co.uk/R2-4K-Dashboard-Recorder-G-Sensor-Parking/dp/B074JT3698?dib=eyJ2IjoiMSJ9.7l9gIO2RVHx25O7qKMvtKn7pWTgiM_BsSw1WwJwxyYo8V8THs4qFF0UGGOrhKSzVZuaqxuZ5Q7WzZBDsQwSGorlHPaqFYuBVQ-V3vonUU_38bvH_jKdB4kERHyQDv1pY1F6YcyLG2ywzuyeh8e7c-ER6fh_B60EXwsGCkykdu8T_PNuQhQNyLKr5Xko05xs_V3mNKODEq64BSZtXwpufdgEMJrMfnSUbLfzpAzT7J-E.O0qtE34mhbdR2d9cZ963uQpXr8A2XrI7uKBUNXaB7FA&dib_tag=se&keywords=rove+r2&qid=1742043944&sr=8-4",
+  "https://www.amazon.co.uk/VIOFO-A119-Dash-Front-Camera-Black/dp/B07RXQLV5C"
 ];
 
 /**
- * Makes a request to the Oxylabs E-Commerce Scraper API
+ * Makes a request to Amazon using Oxylabs Residential Proxies
  * @param {string} url - The Amazon URL to scrape
- * @param {string} source - Either 'search' or 'product'
- * @returns {Promise<Object>} - The parsed JSON response
+ * @returns {Promise<Object>} - The parsed HTML response and metadata
  */
-function scrapeAmazonUrl(url, source = 'product') {
-  return new Promise((resolve, reject) => {
-    // Determine if this is a UK or US Amazon URL
-    const isUK = url.includes('amazon.co.uk');
-    // Use zip/postal codes for geo_location as required by Oxylabs API
-    const zipCode = isUK ? 'SW1A 1AA' : '10001'; // London or New York
-    
-    // Prepare the request payload
-    const payload = JSON.stringify({
-      source: 'amazon',
-      url: url,
-      geo_location: zipCode,
-      render: 'html',
-      parse: true
-    });
-
-    // Prepare the request options
-    const options = {
-      hostname: 'realtime.oxylabs.io',
-      port: 443,
-      path: '/v1/queries',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(payload),
-        'Authorization': 'Basic ' + Buffer.from(`${OXYLABS_USERNAME}:${OXYLABS_PASSWORD}`).toString('base64')
+async function scrapeAmazonUrl(url) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // Determine if this is a UK or US Amazon URL
+      const isUK = url.includes('amazon.co.uk');
+      // Use country code for geo_location
+      const country = isUK ? 'GB' : 'US';
+      
+      // Create proxy agent
+      // Format: customer-USERNAME-cc-{country}:password@proxy
+      const proxyUrl = `http://customer-${OXYLABS_PROXY_USERNAME}-cc-${country}:${OXYLABS_PROXY_PASSWORD}@${OXYLABS_PROXY_SERVER}`;
+      console.log(`Using proxy URL: ${proxyUrl}`);
+      const proxyAgent = new HttpsProxyAgent(proxyUrl);
+      
+      // Common user agents to mimic real browsers
+      const userAgents = [
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15',
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0'
+      ];
+      
+      // Randomly select a user agent
+      const userAgent = userAgents[Math.floor(Math.random() * userAgents.length)];
+      
+      // Set request options
+      const options = {
+        method: 'GET',
+        headers: {
+          'User-Agent': userAgent,
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.5',
+          'Connection': 'keep-alive',
+          'Upgrade-Insecure-Requests': '1',
+          'Cache-Control': 'max-age=0'
+        },
+        agent: proxyAgent,
+        timeout: 60000 // 60 seconds timeout
+      };
+      
+      console.log(`Scraping ${url} using residential proxy (${country})`);
+      
+      // Make the request
+      const response = await fetch(url, options);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
-    };
-
-    // Make the request
-    const req = https.request(options, (res) => {
-      let data = '';
-
-      res.on('data', (chunk) => {
-        data += chunk;
-      });
-
-      res.on('end', () => {
-        try {
-          // Check if data is empty
-          if (!data || data.trim() === '') {
-            console.error(`Empty response from Oxylabs API for URL: ${url}`);
-            reject(new Error(`Empty response from Oxylabs API for URL: ${url}`));
-            return;
+      
+      const html = await response.text();
+      
+      // Check if the response is empty
+      if (!html || html.trim() === '') {
+        throw new Error(`Empty response for URL: ${url}`);
+      }
+      
+      // Check if we got a captcha page
+      if (html.includes('captcha') && html.includes('robot')) {
+        throw new Error(`Captcha detected for URL: ${url}`);
+      }
+      
+      // Create a result object similar to the Oxylabs API response
+      const result = {
+        results: [{
+          content: {
+            url: url,
+            html: html
           }
-          
-          const parsedData = JSON.parse(data);
-          if (res.statusCode !== 200) {
-            console.error(`Error from Oxylabs API: ${JSON.stringify(parsedData)}`);
-            reject(new Error(`Oxylabs API returned status code ${res.statusCode}`));
-            return;
-          }
-          
-          // Check if the response contains results
-          if (!parsedData.results || !Array.isArray(parsedData.results) || parsedData.results.length === 0) {
-            console.error(`No results found in Oxylabs API response for URL: ${url}`);
-            reject(new Error(`No results found in Oxylabs API response for URL: ${url}`));
-            return;
-          }
-          
-          resolve(parsedData);
-        } catch (error) {
-          console.error(`Error parsing Oxylabs API response for URL ${url}:`, error);
-          reject(error);
-        }
-      });
-    });
-
-    req.on('error', (error) => {
-      console.error(`Error making request to Oxylabs API for URL ${url}:`, error);
+        }]
+      };
+      
+      // Parse the HTML to extract product data
+      const productData = parseAmazonHtml(html, url);
+      
+      if (productData) {
+        result.results[0].content = {
+          ...result.results[0].content,
+          ...productData
+        };
+      }
+      
+      resolve(result);
+    } catch (error) {
+      console.error(`Error scraping URL ${url}:`, error.message);
       reject(error);
-    });
-
-    // Set a timeout for the request (30 seconds)
-    req.setTimeout(30000, () => {
-      req.destroy();
-      console.error(`Request timeout for URL: ${url}`);
-      reject(new Error(`Request timeout for URL: ${url}`));
-    });
-
-    req.write(payload);
-    req.end();
+    }
   });
 }
 
 /**
- * Extracts product information from a search results page
- * @param {Object} searchData - The parsed search results from Oxylabs API
+ * Parses Amazon HTML to extract product data
+ * @param {string} html - The HTML content
+ * @param {string} url - The Amazon URL
+ * @returns {Object} - Extracted product data
+ */
+function parseAmazonHtml(html, url) {
+  try {
+    // Basic product object
+    const product = {
+      url: url,
+      asin: extractAsin(url),
+      title: extractFromHtml(html, /<span id="productTitle"[^>]*>([^<]+)<\/span>/),
+      brand: extractFromHtml(html, /<a id="bylineInfo"[^>]*>([^<]+)<\/a>/),
+      price: extractPrice(html),
+      rating: extractRating(html),
+      reviews_count: extractReviewCount(html),
+      images: extractImages(html),
+      bullet_points: extractBulletPoints(html),
+      description: extractDescription(html)
+    };
+    
+    return product;
+  } catch (error) {
+    console.error('Error parsing Amazon HTML:', error);
+    return null;
+  }
+}
+
+/**
+ * Extracts ASIN from Amazon URL
+ * @param {string} url - The Amazon URL
+ * @returns {string} - The ASIN
+ */
+function extractAsin(url) {
+  const asinMatch = url.match(/\/dp\/([A-Z0-9]{10})/);
+  return asinMatch ? asinMatch[1] : '';
+}
+
+/**
+ * Extracts data from HTML using regex
+ * @param {string} html - The HTML content
+ * @param {RegExp} regex - The regex pattern
+ * @returns {string} - The extracted data
+ */
+function extractFromHtml(html, regex) {
+  const match = html.match(regex);
+  return match ? match[1].trim() : '';
+}
+
+/**
+ * Extracts price from HTML
+ * @param {string} html - The HTML content
+ * @returns {number} - The price
+ */
+function extractPrice(html) {
+  // Try different price selectors
+  const pricePatterns = [
+    /<span class="a-offscreen">([^<]+)<\/span>/,
+    /<span id="priceblock_ourprice"[^>]*>([^<]+)<\/span>/,
+    /<span id="priceblock_dealprice"[^>]*>([^<]+)<\/span>/
+  ];
+  
+  for (const pattern of pricePatterns) {
+    const match = html.match(pattern);
+    if (match) {
+      // Extract numbers from the price string
+      const priceStr = match[1].replace(/[^\d.,]/g, '');
+      return parseFloat(priceStr.replace(',', '.'));
+    }
+  }
+  
+  return 0;
+}
+
+/**
+ * Extracts rating from HTML
+ * @param {string} html - The HTML content
+ * @returns {number} - The rating
+ */
+function extractRating(html) {
+  const ratingMatch = html.match(/([0-9.]+) out of 5 stars/);
+  return ratingMatch ? parseFloat(ratingMatch[1]) : 0;
+}
+
+/**
+ * Extracts review count from HTML
+ * @param {string} html - The HTML content
+ * @returns {number} - The review count
+ */
+function extractReviewCount(html) {
+  const reviewMatch = html.match(/([0-9,]+) ratings/);
+  return reviewMatch ? parseInt(reviewMatch[1].replace(/,/g, '')) : 0;
+}
+
+/**
+ * Extracts images from HTML
+ * @param {string} html - The HTML content
+ * @returns {Array<string>} - Array of image URLs
+ */
+function extractImages(html) {
+  const images = [];
+  
+  // Try to find the image gallery data
+  const imageDataMatch = html.match(/"large":"(https:\/\/[^"]+)"/g);
+  
+  if (imageDataMatch) {
+    imageDataMatch.forEach(match => {
+      const url = match.match(/"large":"(https:\/\/[^"]+)"/)[1];
+      images.push(url);
+    });
+  }
+  
+  // If no images found, try to find the main image
+  if (images.length === 0) {
+    const mainImageMatch = html.match(/<img id="landingImage"[^>]*src="([^"]+)"/);
+    if (mainImageMatch) {
+      images.push(mainImageMatch[1]);
+    }
+  }
+  
+  return images;
+}
+
+/**
+ * Extracts bullet points from HTML
+ * @param {string} html - The HTML content
+ * @returns {Array<string>} - Array of bullet points
+ */
+function extractBulletPoints(html) {
+  const bulletPoints = [];
+  
+  // Find the feature bullets section
+  const featureSection = html.match(/<div id="feature-bullets"[^>]*>[\s\S]*?<\/div>/);
+  
+  if (featureSection) {
+    // Extract each bullet point
+    const bulletMatches = featureSection[0].match(/<span class="a-list-item">([^<]+)<\/span>/g);
+    
+    if (bulletMatches) {
+      bulletMatches.forEach(match => {
+        const text = match.match(/<span class="a-list-item">([^<]+)<\/span>/)[1].trim();
+        if (text) {
+          bulletPoints.push(text);
+        }
+      });
+    }
+  }
+  
+  return bulletPoints;
+}
+
+/**
+ * Extracts description from HTML
+ * @param {string} html - The HTML content
+ * @returns {string} - The description
+ */
+function extractDescription(html) {
+  // Try different description selectors
+  const descriptionPatterns = [
+    /<div id="productDescription"[^>]*>[\s\S]*?<p>([^<]+)<\/p>/,
+    /<div id="description"[^>]*>[\s\S]*?<p>([^<]+)<\/p>/
+  ];
+  
+  for (const pattern of descriptionPatterns) {
+    const match = html.match(pattern);
+    if (match) {
+      return match[1].trim();
+    }
+  }
+  
+  return '';
+}
+
+/**
+ * Extracts product URLs from a search results page
+ * @param {Object} searchData - The parsed search results
  * @returns {Array<string>} - Array of product URLs
  */
 function extractProductUrlsFromSearch(searchData) {
   try {
-    const results = searchData.results[0];
-    if (!results || !results.content) {
-      console.error('No search results found in the response');
-      return [];
-    }
-
-    // Handle different response structures
-    let productUrls = [];
+    const html = searchData.results[0].content.html;
+    const productUrls = [];
     
-    // Check if results are in the expected format
-    if (results.content.results && Array.isArray(results.content.results)) {
-      productUrls = results.content.results
-        .filter(item => item.url && item.url.includes('/dp/'))
-        .map(item => item.url);
-    } 
-    // Check if results are in the organic_results format
-    else if (results.content.organic_results && Array.isArray(results.content.organic_results)) {
-      productUrls = results.content.organic_results
-        .filter(item => item.url && item.url.includes('/dp/'))
-        .map(item => item.url);
+    // Extract product URLs from search results
+    const productMatches = html.match(/\/dp\/[A-Z0-9]{10}[^"]+/g);
+    
+    if (productMatches) {
+      const domain = searchData.results[0].content.url.includes('amazon.co.uk') 
+        ? 'https://www.amazon.co.uk' 
+        : 'https://www.amazon.com';
+      
+      // Create unique set of product URLs
+      const uniqueUrls = [...new Set(productMatches)].map(path => {
+        // Clean up the URL path
+        const cleanPath = path.split('ref=')[0];
+        return `${domain}${cleanPath}`;
+      });
+      
+      productUrls.push(...uniqueUrls);
     }
-    // Check if results are in the search_results format
-    else if (results.content.search_results && Array.isArray(results.content.search_results)) {
-      productUrls = results.content.search_results
-        .filter(item => item.url && item.url.includes('/dp/'))
-        .map(item => item.url);
-    }
-    // Check if results are in the new format with 'results' at the top level
-    else if (results.content.results && typeof results.content.results === 'string') {
-      // This is likely a different format, try to extract ASIN from the HTML
-      const asinMatches = results.content.results.match(/\/dp\/([A-Z0-9]{10})/g);
-      if (asinMatches) {
-        const domain = results.content.url.includes('amazon.co.uk') ? 'amazon.co.uk' : 'amazon.com';
-        productUrls = [...new Set(asinMatches)].map(asin => `https://www.${domain}${asin}`);
-      }
-    }
-    // Log the structure for debugging if no known format is found
-    else {
-      console.error('Unknown search results format:', Object.keys(results.content));
-    }
-
+    
     return productUrls;
   } catch (error) {
     console.error('Error extracting product URLs from search:', error);
