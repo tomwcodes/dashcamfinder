@@ -533,7 +533,6 @@ const renderProductsGrid = (products, marketplace) => {
             <div class="stars">${generateStarRating(product.rating)}</div>
             <div class="review-count">${product.reviewCount > 0 ? product.reviewCount.toLocaleString() + ' ratings' : 'No reviews yet'}</div>
           </div>
-          ${releaseDate ? `<div class="product-card-release-date">Released: ${releaseDate}</div>` : ''}
           <div class="product-card-specs-toggle">
             <button class="specs-toggle-button">Show Specifications</button>
           </div>
