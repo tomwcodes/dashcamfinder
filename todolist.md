@@ -21,13 +21,9 @@
 - [x] Add more detailed feature filters (GPS, WiFi, Parking Mode, etc.)
 
 ## Pending Tasks
-- [ ] Add dark mode toggle functionality
-- [ ] Implement search functionality for all product text (not just model)
-- [ ] Add product comparison feature to compare multiple dash cams side by side
+- [x] Add product comparison feature to compare multiple dash cams side by side
 - [ ] Create a "Recently Viewed" section using localStorage
 - [ ] Implement user reviews section
-- [ ] Create a privacy policy page
-- [ ] Add analytics tracking
 - [ ] Optimize images for faster loading
 - [ ] Implement lazy loading for product images
 - [ ] Create a contact form

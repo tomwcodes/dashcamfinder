@@ -13,6 +13,99 @@ let dashCamProducts = [];
 // Path to the JSON file containing product data
 const PRODUCTS_JSON_PATH = '/data/products.json';
 
+// Array to store favourited product IDs
+let favouritedProducts = [];
+
+// Maximum number of products that can be favourited for comparison
+const MAX_FAVOURITES = 4;
+
+/**
+ * Load favourited products from localStorage
+ */
+const loadFavouritedProducts = () => {
+  try {
+    const savedFavourites = localStorage.getItem('dashCamFavourites');
+    if (savedFavourites) {
+      favouritedProducts = JSON.parse(savedFavourites);
+    }
+  } catch (error) {
+    console.error('Error loading favourited products:', error);
+    favouritedProducts = [];
+  }
+};
+
+/**
+ * Save favourited products to localStorage
+ */
+const saveFavouritedProducts = () => {
+  try {
+    localStorage.setItem('dashCamFavourites', JSON.stringify(favouritedProducts));
+  } catch (error) {
+    console.error('Error saving favourited products:', error);
+  }
+};
+
+/**
+ * Toggle a product as favourited
+ * @param {number} productId - The ID of the product to toggle
+ * @returns {boolean} - Whether the product is now favourited
+ */
+const toggleFavourite = (productId) => {
+  const index = favouritedProducts.indexOf(productId);
+  
+  if (index === -1) {
+    // Product is not favourited, add it if we haven't reached the maximum
+    if (favouritedProducts.length >= MAX_FAVOURITES) {
+      alert(`You can only compare up to ${MAX_FAVOURITES} products at once. Please remove a product before adding another.`);
+      return false;
+    }
+    
+    favouritedProducts.push(productId);
+  } else {
+    // Product is already favourited, remove it
+    favouritedProducts.splice(index, 1);
+  }
+  
+  // Save to localStorage
+  saveFavouritedProducts();
+  
+  // Update the UI to reflect the change
+  updateFavouritesUI();
+  
+  return index === -1;
+};
+
+/**
+ * Update UI elements related to favourites
+ */
+const updateFavouritesUI = () => {
+  // Update favourite buttons
+  document.querySelectorAll('.favourite-button').forEach(button => {
+    const productId = parseInt(button.dataset.productId, 10);
+    const isFavourited = favouritedProducts.includes(productId);
+    
+    button.classList.toggle('active', isFavourited);
+    button.setAttribute('aria-pressed', isFavourited);
+    button.innerHTML = isFavourited ? 
+      '<i class="fas fa-star"></i> Remove from Comparison' : 
+      '<i class="far fa-star"></i> Add to Comparison';
+  });
+  
+  // Update favourites counter
+  const favouritesCounter = document.getElementById('favourites-counter');
+  if (favouritesCounter) {
+    favouritesCounter.textContent = favouritedProducts.length;
+    favouritesCounter.style.display = favouritedProducts.length > 0 ? 'inline-block' : 'none';
+  }
+  
+  // Update compare button state
+  const compareButton = document.getElementById('compare-button');
+  if (compareButton) {
+    compareButton.disabled = favouritedProducts.length < 2;
+    compareButton.classList.toggle('disabled', favouritedProducts.length < 2);
+  }
+};
+
 /**
  * Fetches product data from the JSON file
  * @returns {Promise<Array>} - Promise that resolves to the product data array
@@ -422,6 +515,9 @@ const renderProductsGrid = (products, marketplace) => {
     // Format release date
     const releaseDate = product.releaseDate ? new Date(product.releaseDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : null;
     
+    // Check if product is favourited
+    const isFavourited = favouritedProducts.includes(product.id);
+    
     gridHtml += `
       <div class="product-card">
         <div class="product-card-image">
@@ -445,6 +541,9 @@ const renderProductsGrid = (products, marketplace) => {
             ${specSections.join('')}
           </div>
           <div class="product-card-actions">
+            <button class="favourite-button ${isFavourited ? 'active' : ''}" data-product-id="${product.id}" aria-pressed="${isFavourited}">
+              <i class="${isFavourited ? 'fas' : 'far'} fa-star"></i> ${isFavourited ? 'Remove from Comparison' : 'Add to Comparison'}
+            </button>
             ${price === -1 ? 
               `<button class="button buy-button disabled" disabled>Currently Unavailable</button>` : 
               `<a href="${amazonUrl}" target="_blank" class="button buy-button">View on Amazon</a>`
@@ -467,6 +566,14 @@ const renderProductsGrid = (products, marketplace) => {
       
       specsContainer.style.display = isVisible ? 'none' : 'block';
       this.textContent = isVisible ? 'Show Specifications' : 'Hide Specifications';
+    });
+  });
+  
+  // Add event listeners for favourite buttons
+  document.querySelectorAll('.favourite-button').forEach(button => {
+    button.addEventListener('click', function() {
+      const productId = parseInt(this.dataset.productId, 10);
+      toggleFavourite(productId);
     });
   });
 };
@@ -567,6 +674,186 @@ const getUrlParams = () => {
   };
 };
 
+/**
+ * Render the comparison view for favourited products
+ * @param {string} marketplace - The current marketplace (amazon_com or amazon_uk)
+ */
+const renderComparisonView = (marketplace) => {
+  const resultsContainer = document.getElementById('results-container');
+  
+  // Get the favourited products
+  const favouritedProductsData = dashCamProducts.filter(product => favouritedProducts.includes(product.id));
+  
+  if (favouritedProductsData.length === 0) {
+    resultsContainer.innerHTML = `
+      <div class="no-results">
+        <p>You haven't added any products to compare yet. Click the "Add to Comparison" button on products you want to compare.</p>
+      </div>
+    `;
+    return;
+  }
+  
+  // Create the comparison view
+  let comparisonHtml = `
+    <div class="comparison-view">
+      <div class="comparison-header">
+        <h2>Product Comparison</h2>
+        <p>Comparing ${favouritedProductsData.length} products</p>
+        <button id="clear-comparison" class="button outline">Clear All</button>
+      </div>
+      <div class="comparison-table-container">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              ${favouritedProductsData.map(product => `
+                <th class="product-column">
+                  <div class="comparison-product-header">
+                    <img src="${product.image || `https://via.placeholder.com/100x60/f0f0f0/333333?text=${encodeURIComponent(product.brand)}`}" 
+                         alt="${product.brand} ${product.model}" class="comparison-product-image">
+                    <h3>${product.brand} ${product.cleanModelName || product.model}</h3>
+                    <div class="comparison-product-price">${formatPrice(marketplace === 'amazon_uk' ? product.price.amazon_uk : product.price.amazon_com, marketplace)}</div>
+                    <div class="comparison-product-rating">
+                      <div class="stars">${generateStarRating(product.rating)}</div>
+                      <div class="rating-number">${product.rating}</div>
+                    </div>
+                    <button class="remove-from-comparison" data-product-id="${product.id}">
+                      <i class="fas fa-times"></i> Remove
+                    </button>
+                  </div>
+                </th>
+              `).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Resolution -->
+            <tr>
+              <td class="feature-name">Resolution</td>
+              ${favouritedProductsData.map(product => {
+                const videoSpecs = product.specs?.video || {};
+                return `<td>${videoSpecs.resolution || 'N/A'}</td>`;
+              }).join('')}
+            </tr>
+            
+            <!-- Field of View -->
+            <tr>
+              <td class="feature-name">Field of View</td>
+              ${favouritedProductsData.map(product => {
+                const physicalSpecs = product.specs?.physical || {};
+                return `<td>${physicalSpecs.fov ? physicalSpecs.fov + '°' : 'N/A'}</td>`;
+              }).join('')}
+            </tr>
+            
+            <!-- Night Vision -->
+            <tr>
+              <td class="feature-name">Night Vision</td>
+              ${favouritedProductsData.map(product => {
+                const videoSpecs = product.specs?.video || {};
+                return `<td>${videoSpecs.nightVision ? '<i class="fas fa-check text-success"></i>' : '<i class="fas fa-times text-danger"></i>'}</td>`;
+              }).join('')}
+            </tr>
+            
+            <!-- WiFi -->
+            <tr>
+              <td class="feature-name">WiFi</td>
+              ${favouritedProductsData.map(product => {
+                const connectivitySpecs = product.specs?.connectivity || {};
+                return `<td>${connectivitySpecs.wifi ? '<i class="fas fa-check text-success"></i>' : '<i class="fas fa-times text-danger"></i>'}</td>`;
+              }).join('')}
+            </tr>
+            
+            <!-- GPS -->
+            <tr>
+              <td class="feature-name">GPS</td>
+              ${favouritedProductsData.map(product => {
+                const connectivitySpecs = product.specs?.connectivity || {};
+                return `<td>${connectivitySpecs.gps ? '<i class="fas fa-check text-success"></i>' : '<i class="fas fa-times text-danger"></i>'}</td>`;
+              }).join('')}
+            </tr>
+            
+            <!-- Parking Mode -->
+            <tr>
+              <td class="feature-name">Parking Mode</td>
+              ${favouritedProductsData.map(product => {
+                const featureSpecs = product.specs?.features || {};
+                return `<td>${featureSpecs.parkingMode ? '<i class="fas fa-check text-success"></i>' : '<i class="fas fa-times text-danger"></i>'}</td>`;
+              }).join('')}
+            </tr>
+            
+            <!-- Motion Detection -->
+            <tr>
+              <td class="feature-name">Motion Detection</td>
+              ${favouritedProductsData.map(product => {
+                const featureSpecs = product.specs?.features || {};
+                return `<td>${featureSpecs.motionDetection ? '<i class="fas fa-check text-success"></i>' : '<i class="fas fa-times text-danger"></i>'}</td>`;
+              }).join('')}
+            </tr>
+            
+            <!-- Loop Recording -->
+            <tr>
+              <td class="feature-name">Loop Recording</td>
+              ${favouritedProductsData.map(product => {
+                const featureSpecs = product.specs?.features || {};
+                return `<td>${featureSpecs.loopRecording ? '<i class="fas fa-check text-success"></i>' : '<i class="fas fa-times text-danger"></i>'}</td>`;
+              }).join('')}
+            </tr>
+            
+            <!-- Emergency Recording -->
+            <tr>
+              <td class="feature-name">Emergency Recording</td>
+              ${favouritedProductsData.map(product => {
+                const featureSpecs = product.specs?.features || {};
+                return `<td>${featureSpecs.emergencyRecording ? '<i class="fas fa-check text-success"></i>' : '<i class="fas fa-times text-danger"></i>'}</td>`;
+              }).join('')}
+            </tr>
+            
+            <!-- Amazon Link -->
+            <tr>
+              <td class="feature-name">Buy Now</td>
+              ${favouritedProductsData.map(product => {
+                const amazonUrl = marketplace === 'amazon_uk' ? product.amazonUrl.uk : product.amazonUrl.com;
+                const price = marketplace === 'amazon_uk' ? product.price.amazon_uk : product.price.amazon_com;
+                return `<td>
+                  ${price === -1 ? 
+                    `<button class="button buy-button disabled" disabled>Currently Unavailable</button>` : 
+                    `<a href="${amazonUrl}" target="_blank" class="button buy-button">View on Amazon</a>`
+                  }
+                </td>`;
+              }).join('')}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="comparison-actions">
+        <button id="back-to-products" class="button outline">Back to All Products</button>
+      </div>
+    </div>
+  `;
+  
+  resultsContainer.innerHTML = comparisonHtml;
+  
+  // Add event listeners for the comparison view buttons
+  document.getElementById('clear-comparison').addEventListener('click', () => {
+    favouritedProducts = [];
+    saveFavouritedProducts();
+    updateFavouritesUI();
+    updateResults();
+  });
+  
+  document.getElementById('back-to-products').addEventListener('click', () => {
+    document.getElementById('view-favourites').classList.remove('active');
+    updateResults();
+  });
+  
+  document.querySelectorAll('.remove-from-comparison').forEach(button => {
+    button.addEventListener('click', function() {
+      const productId = parseInt(this.dataset.productId, 10);
+      toggleFavourite(productId);
+      renderComparisonView(marketplace);
+    });
+  });
+};
+
 // Initialize the page with product data
 const initPage = () => {
   // If no products were loaded, show an error message
@@ -580,6 +867,40 @@ const initPage = () => {
       `;
     }
     return;
+  }
+  
+  // Load favourited products from localStorage
+  loadFavouritedProducts();
+  
+  // Add the comparison button to the header
+  const headerContainer = document.querySelector('.site-header .container');
+  if (headerContainer) {
+    const compareButtonContainer = document.createElement('div');
+    compareButtonContainer.className = 'compare-button-container';
+    compareButtonContainer.innerHTML = `
+      <button id="view-favourites" class="button secondary">
+        <i class="fas fa-star"></i> View Favourites
+        <span id="favourites-counter" class="favourites-counter" style="display: none;">0</span>
+      </button>
+    `;
+    headerContainer.appendChild(compareButtonContainer);
+    
+    // Add event listener for the compare button
+    document.getElementById('view-favourites').addEventListener('click', function() {
+      this.classList.toggle('active');
+      
+      if (this.classList.contains('active')) {
+        // Show comparison view
+        const marketplace = document.querySelector('input[name="marketplace"]:checked').value;
+        renderComparisonView(marketplace);
+      } else {
+        // Show regular view
+        updateResults();
+      }
+    });
+    
+    // Update the favourites UI
+    updateFavouritesUI();
   }
   // Get elements
   const marketplaceRadios = document.querySelectorAll('input[name="marketplace"]');

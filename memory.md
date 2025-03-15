@@ -24,6 +24,8 @@ The project has a functional implementation with the following features:
 - Marketplace-specific product filtering to ensure products only appear in their respective marketplace sections
 - Unavailable product detection (products with price = -1) with filtering to show only available products
 - Disabled "View on Amazon" buttons for unavailable products with clear visual indication
+- Product comparison feature allowing users to favourite up to 4 products and compare them side by side
+- Persistent favourites using localStorage to maintain selected products between sessions
 
 ## Project Structure
 ```
@@ -72,8 +74,8 @@ dashcamfinder/
 The next development priorities are:
 1. Add dark mode toggle functionality
 2. Implement search functionality for all product text
-3. Add product comparison feature
-4. Create a "Recently Viewed" section using localStorage
-5. Implement user reviews section
+3. Create a "Recently Viewed" section using localStorage
+4. Implement user reviews section
+5. Optimize images for faster loading
 
 See todolist.md for a complete list of pending tasks.
