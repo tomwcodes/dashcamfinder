@@ -12,8 +12,15 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 // Get Oxylabs credentials from environment variables
-const OXYLABS_USERNAME = process.env.OXYLABS_USERNAME || 'hikingtom_EndZU';
-const OXYLABS_PASSWORD = process.env.OXYLABS_PASSWORD || '_C3TMABL22zs4bG';
+const OXYLABS_USERNAME = process.env.OXYLABS_USERNAME;
+const OXYLABS_PASSWORD = process.env.OXYLABS_PASSWORD;
+
+// Check if credentials are available
+if (!OXYLABS_USERNAME || !OXYLABS_PASSWORD) {
+  console.error('ERROR: Oxylabs credentials not found in environment variables.');
+  console.error('Please set OXYLABS_USERNAME and OXYLABS_PASSWORD in your .env file.');
+  console.error('See scripts/.env.example for reference.');
+}
 
 // Amazon search URLs for dash cams
 const AMAZON_SEARCH_URLS = [

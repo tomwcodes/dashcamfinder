@@ -42,13 +42,24 @@ brew install node
 
 ### 2. Configure Oxylabs API Credentials
 
-Edit the `scripts/amazon-scraper.js` file and replace the placeholder credentials with your actual Oxylabs API credentials:
+Create a `.env` file in the `scripts` directory based on the provided `.env.example` file:
 
-```javascript
-// Configuration - Replace with your actual Oxylabs credentials
-const OXYLABS_USERNAME = 'YOUR_OXYLABS_USERNAME';
-const OXYLABS_PASSWORD = 'YOUR_OXYLABS_API_KEY';
+```bash
+# Copy the example file
+cp scripts/.env.example scripts/.env
+
+# Edit the .env file with your actual credentials
+nano scripts/.env
 ```
+
+Your `.env` file should contain your actual Oxylabs credentials:
+
+```
+OXYLABS_USERNAME=your_actual_username
+OXYLABS_PASSWORD=your_actual_password
+```
+
+This approach keeps your credentials secure and separate from the source code.
 
 ### 3. Add Product URLs to Scrape
 
