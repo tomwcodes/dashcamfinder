@@ -19,6 +19,8 @@
 - [x] Remove features and resolution columns from results data
 - [x] Fix duplicate resolution text in list view specs column
 - [x] Add more detailed feature filters (GPS, WiFi, Parking Mode, etc.)
+- [x] Increase header title, text and icon size to match navigation buttons
+- [x] Center header content on smaller screens for better mobile display
 
 ## Pending Tasks
 - [x] Add product comparison feature to compare multiple dash cams side by side

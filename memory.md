@@ -26,6 +26,8 @@ The project has a functional implementation with the following features:
 - Disabled "View on Amazon" buttons for unavailable products with clear visual indication
 - Product comparison feature allowing users to favourite up to 4 products and compare them side by side
 - Persistent favourites using localStorage to maintain selected products between sessions
+- Enhanced header with larger title, text, and icon to match navigation buttons
+- Centered header content on smaller screens for improved mobile experience
 
 ## Project Structure
 ```
