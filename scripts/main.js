@@ -332,7 +332,7 @@ const renderProductsGrid = (products, marketplace) => {
       badges.push(`<span class="spec-badge resolution">${videoSpecs.resolution}</span>`);
     }
     
-    // FOV badge
+    // FOV badge - Always show FOV if available
     if (physicalSpecs.fov) {
       badges.push(`<span class="spec-badge fov">${physicalSpecs.fov}° FOV</span>`);
     }
@@ -532,6 +532,11 @@ const renderProductsGrid = (products, marketplace) => {
             <div class="rating-number">${product.rating}</div>
             <div class="stars">${generateStarRating(product.rating)}</div>
             <div class="review-count">${product.reviewCount > 0 ? product.reviewCount.toLocaleString() + ' ratings' : 'No reviews yet'}</div>
+          </div>
+          <div class="product-card-key-specs">
+            ${videoSpecs.resolution ? `<div class="key-spec"><strong>Resolution:</strong> ${videoSpecs.resolution}</div>` : ''}
+            ${physicalSpecs.fov ? `<div class="key-spec"><strong>Field of View:</strong> ${physicalSpecs.fov}°</div>` : ''}
+            ${physicalSpecs.channels && physicalSpecs.channels > 1 ? `<div class="key-spec"><strong>Channels:</strong> ${physicalSpecs.channels}</div>` : ''}
           </div>
           <div class="product-card-specs-toggle">
             <button class="specs-toggle-button">Show Specifications</button>
