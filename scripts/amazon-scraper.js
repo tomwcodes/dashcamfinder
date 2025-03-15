@@ -4,14 +4,20 @@
  * to collect dash cam product data from Amazon.
  */
 
-const https = require('https');
-const fs = require('fs');
-const path = require('path');
-const fetch = require('node-fetch');
-const { HttpsProxyAgent } = require('https-proxy-agent');
+import https from 'https';
+import fs from 'fs';
+import path from 'path';
+import fetch from 'node-fetch';
+import { HttpsProxyAgent } from 'https-proxy-agent';
+import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
+
+// Get the directory name
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Load environment variables from .env file
-require('dotenv').config({ path: path.join(__dirname, '.env') });
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 // Get Oxylabs credentials from environment variables
 const OXYLABS_USERNAME = process.env.OXYLABS_USERNAME;
@@ -457,7 +463,8 @@ function extractProductDetails(productData, marketplace) {
       // Common dash cam brands
       const dashCamBrands = ['Nextbase', 'Garmin', 'REDTIGER', 'ROVE', 'Thinkware', 'BlackVue', 
                             'Vantrue', 'APEMAN', 'AUKEY', 'CHORTAU', '70mai', 'Kingslim', 'Crosstour', 
-                            'REXING', 'Anker', 'Pioneer', 'VIOFO', 'YI', 'Cobra', 'DDPai'];
+                            'REXING', 'Anker', 'Pioneer', 'VIOFO', 'YI', 'Cobra', 'DDPai', 'GMAIPOP',
+                            'ARIFAYZ'];
       
       for (const knownBrand of dashCamBrands) {
         if (title.includes(knownBrand)) {
@@ -609,6 +616,24 @@ function extractProductDetails(productData, marketplace) {
       reviewCount = product.reviews_total;
     }
 
+    // Extract structured specifications if available
+    let structuredSpecs = null;
+    if (product.specifications || results.content.specifications) {
+      structuredSpecs = product.specifications || results.content.specifications;
+    }
+
+    // Extract technical details if available
+    let technicalDetails = null;
+    if (product.technical_details || results.content.technical_details) {
+      technicalDetails = product.technical_details || results.content.technical_details;
+    }
+
+    // Extract description
+    let description = null;
+    if (product.description || results.content.description) {
+      description = product.description || results.content.description;
+    }
+
     // Determine resolution from title or features
     let resolution = '1080p'; // Default
     const resolutionPatterns = [
@@ -669,6 +694,21 @@ function extractProductDetails(productData, marketplace) {
         [marketplace === 'amazon_uk' ? 'uk' : 'com']: url
       }
     };
+
+    // Add structured data if available
+    if (structuredSpecs) {
+      formattedProduct.structuredSpecs = structuredSpecs;
+    }
+
+    // Add technical details if available
+    if (technicalDetails) {
+      formattedProduct.technicalDetails = technicalDetails;
+    }
+
+    // Add description if available
+    if (description) {
+      formattedProduct.description = description;
+    }
 
     console.log('Extracted product data:', JSON.stringify(formattedProduct, null, 2));
     return formattedProduct;
@@ -890,7 +930,7 @@ async function scrapeDashCamProducts() {
   }
 }
 
-module.exports = {
+export {
   scrapeDashCamProducts,
   scrapeProductUrls,
   PRODUCT_URLS

@@ -1,0 +1,101 @@
+{
+  "id": 1234,
+  "brand": "REDTIGER",
+  "model": "REDTIGER F7NP Front Rear, 4K/2.5K Full HD Dash Camera for Cars, Included 32GB Card, Built-in Wi-Fi GPS, 3.16\" IPS Screen, Night Vision, 170°Wide Angle, WDR, 24H Parking Mode",
+  "image": "https://m.media-amazon.com/images/I/41IK3vBCYyL._AC_.jpg",
+  "price": {
+    "amazon_com": 119.99
+  },
+  "rating": 4.4,
+  "reviewCount": 14124,
+  "resolution": "4K",
+  "features": [
+    "4K+1080P DUAL RECORDING- REDTIGER brings to you F7NP dual dash cam which records video of up to Ultra HD 4K(3840*2160P)+FHD 1080P resolutions. It helps you to read the key details like road signs and vehicle license plates.To reduce the blind areas it has the front wide angle of 170 degree and rear wide angle of 140 degree. This helps you during unexpected circumstances like collision to retain and present evidence.",
+    "SUPERIOR NIGHT VISION- REDTIGER driving recorder adopts an excellent optical lens with an ultra-large F1.5 aperture and 6 layer glass, and is equipped with HDR/WDR technology to capture important details clearly under low light conditions.",
+    "WiFi/SMART APP CONTROL- You just need to connect the dash cam to your smartphone APP via WiFi and then you can use the \"Redtiger\" app to view, playback, and manage the dash cam on your IOS or Android devices. You can also download and edit videos in the app. By just one-click you can share your travel experiences and wonderful moments with your friends and family.",
+    "DASH CAM WITH GPS- REDTIGER dash cam has a built-in GPS and records the driving route, real-time speed, precise location data.You can track on google maps via WiFi using the App or with our Windows and Mac GPSPlayer, which will provide further additional evidence if an accident occurs.",
+    "RELIABLE FEATURES FOR ACCIDENT RECORDING- Even when the card is full the REDTIGER dash cam will continue recording with its Loop Recording feature. As soon as the G sensor detects a sudden collision, it locks and saves the collision video. It also has a 24-hour parking monitor available on the dash cam to record continuously for 24 hours with time-lapse recording at parking mode. Please note that a hardware kit is needed.",
+    "SUPER AFTERSALES-Our greatest pursuit is to satisfy the needs of consumers. REDTIGER dash cam is backed by full 18-MONTH Assurance and 100% Satisfaction Guarantee.Email our customer service and we will assist you with any questions or concerns. We also offer 7*24 hours technical support."
+  ],
+  "releaseDate": "2024-03-15",
+  "popularity": 94,
+  "amazonUrl": {
+    "com": "https://www.amazon.com/REDTIGER-Camera-Included-170%C2%B0Wide-Parking/dp/B098WVKF19"
+  },
+  "specs": {
+    "video": {
+      "resolution": "4K",
+      "fps": 30,
+      "hdr": true,
+      "nightVision": true,
+      "wdr": true
+    },
+    "physical": {
+      "fov": 170,
+      "screenSize": 3.2,
+      "screenType": "IPS",
+      "channels": 1,
+      "sizeDescription": null
+    },
+    "connectivity": {
+      "wifi": true,
+      "wifiFrequency": null,
+      "bluetooth": false,
+      "gps": true,
+      "voiceControl": false
+    },
+    "features": {
+      "parkingMode": true,
+      "motionDetection": false,
+      "loopRecording": true,
+      "emergencyRecording": false,
+      "timeLapse": false,
+      "remoteMonitoring": {
+        "value": false,
+        "source": "default",
+        "confidence": 0.5,
+        "pattern": "default"
+      }
+    },
+    "storage": {
+      "includedStorage": null,
+      "maxStorage": 128,
+      "memoryCardIncluded": false
+    },
+    "additional": {
+      "modelNumber": null,
+      "operatingTemperature": null,
+      "powerSource": {
+        "value": "Car Charger",
+        "source": "default",
+        "confidence": 0.5,
+        "pattern": "default"
+      },
+      "powerOptions": null
+    }
+  },
+  "cleanModelName": "F7NP Front",
+  "extractionMetadata": {
+    "processingTimestamp": "2025-03-15T18:45:51.939Z",
+    "sourcesUsed": {
+      "video": {},
+      "physical": {},
+      "connectivity": {},
+      "features": {
+        "remoteMonitoring": {
+          "source": "default",
+          "confidence": 0.5,
+          "pattern": "default"
+        }
+      },
+      "storage": {},
+      "additional": {
+        "powerSource": {
+          "source": "default",
+          "confidence": 0.5,
+          "pattern": "default"
+        }
+      }
+    }
+  }
+}
